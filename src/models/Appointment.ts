@@ -6,7 +6,7 @@ export class Appointment extends BaseEntity {
     id!: number
 
     @Column({ type: "date" })
-    date!: string; 
+    date!: string;
 
     @Column({ type: "time" })
     time!: string;

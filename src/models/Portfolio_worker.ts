@@ -4,13 +4,13 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm"
 export class Portfolio extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number
-  
+
     @Column()
     portfolio_id!: number
 
     @Column()
     worker_id!: number
-    
+
     @Column()
     created_at!: Date
 
