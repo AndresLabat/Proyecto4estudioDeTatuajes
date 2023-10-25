@@ -17,10 +17,12 @@ export class CreateRoleUserTable1698249832821 implements MigrationInterface {
                     {
                         name: "role_id",
                         type: "int",
+                        isNullable: false
                     },
                     {
                         name: "user_id",
                         type: "int",
+                        isNullable: false
                     },
                     {
                         name: "created-at",

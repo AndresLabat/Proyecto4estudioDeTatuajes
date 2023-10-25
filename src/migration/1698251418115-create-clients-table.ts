@@ -17,6 +17,7 @@ export class CreateClientsTable1698251418115 implements MigrationInterface {
                     {
                         name: "user_id",
                         type: "int",
+                        isNullable: false
                     },
                     {
                         name: "created-at",

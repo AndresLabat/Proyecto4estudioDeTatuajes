@@ -29,6 +29,11 @@ Borrar la tabla desde typescript:
 Crear los models:
 `npx typeorm entity:create ./src/models/#nombredelatabla`
 
+Migraciones (tener en cuenta):
+`isNullable: false`
+`isUnique: true`
+`default: "CURRENT_TIMESTAMP"`
+
 
 
 

@@ -17,10 +17,12 @@ export class CreateAppointmentsTable1698252374419 implements MigrationInterface 
                     {
                         name: "date",
                         type: "date",
+                        isNullable: false
                     },
                     {
                         name: "time",
                         type: "time",
+                        isNullable: false
                     },
                     {
                         name: "status",
@@ -30,10 +32,12 @@ export class CreateAppointmentsTable1698252374419 implements MigrationInterface 
                     {
                         name: "client_id",
                         type: "int",
+                        isNullable: false
                     },
                     {
                         name: "worker_id",
                         type: "int",
+                        isNullable: false
                     },
                     {
                         name: "created-at",
