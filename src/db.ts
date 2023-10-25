@@ -2,6 +2,8 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { CreateUsersTable1698247656405 } from "./migration/1698247656405-create-users-table";
 import { CreateRolesTable1698249114687 } from "./migration/1698249114687-create-roles-table";
+import { CreateRoleUserTable1698249832821 } from "./migration/1698249832821-create-role_user-table";
+import { CreateClientsTable1698251418115 } from "./migration/1698251418115-create-clients-table";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -10,7 +12,8 @@ export const AppDataSource = new DataSource({
     username: "root",
     password: "1234",
     database: "tattoo_studio_db",
-    migrations: [CreateUsersTable1698247656405, CreateRolesTable1698249114687],
+    migrations: [CreateUsersTable1698247656405, CreateRolesTable1698249114687, CreateRoleUserTable1698249832821,
+        CreateClientsTable1698251418115],
     entities: [],
     synchronize: false,
     logging: false,
