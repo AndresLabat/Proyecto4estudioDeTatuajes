@@ -15,7 +15,7 @@ export class CreateWorkersTable1698251793932 implements MigrationInterface {
                         generationStrategy: "increment",
                     },
                     {
-                        name: "hours-worked",
+                        name: "hours_worked",
                         type: "int",
                         default: 0
                     },
@@ -25,12 +25,12 @@ export class CreateWorkersTable1698251793932 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: "created-at",
+                        name: "created_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP"
                     },
                     {
-                        name: "updated-at",
+                        name: "updated_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP",
                         onUpdate: "CURRENT_TIMESTAMP"

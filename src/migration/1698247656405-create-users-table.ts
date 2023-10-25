@@ -15,7 +15,7 @@ export class CreateUsersTable1698247656405 implements MigrationInterface {
                         generationStrategy: "increment",
                     },
                     {
-                        name: "full-name",
+                        name: "full_name",
                         type: "varchar",
                         length: "50",
                         isNullable: false
@@ -34,23 +34,23 @@ export class CreateUsersTable1698247656405 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: "phone-number",
+                        name: "phone_number",
                         type: "int",
                         length: "20",
                         isNullable: false
                     },
                     {
-                        name: "is-active",
+                        name: "is_active",
                         type: "boolean",
                         default: true
                     },
                     {
-                        name: "created-at",
+                        name: "created_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP"
                     },
                     {
-                        name: "updated-at",
+                        name: "updated_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP",
                         onUpdate: "CURRENT_TIMESTAMP"

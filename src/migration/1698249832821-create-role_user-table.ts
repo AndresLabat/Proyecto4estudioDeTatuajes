@@ -25,12 +25,12 @@ export class CreateRoleUserTable1698249832821 implements MigrationInterface {
                         isNullable: false
                     },
                     {
-                        name: "created-at",
+                        name: "created_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP"
                     },
                     {
-                        name: "updated-at",
+                        name: "updated_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP",
                         onUpdate: "CURRENT_TIMESTAMP"

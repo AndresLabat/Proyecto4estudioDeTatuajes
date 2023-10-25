@@ -40,12 +40,12 @@ export class CreateAppointmentsTable1698252374419 implements MigrationInterface 
                         isNullable: false
                     },
                     {
-                        name: "created-at",
+                        name: "created_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP"
                     },
                     {
-                        name: "updated-at",
+                        name: "updated_at",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP",
                         onUpdate: "CURRENT_TIMESTAMP"
