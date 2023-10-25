@@ -1,24 +1,15 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm"
 
-@Entity("users")
-export class User extends BaseEntity {
+@Entity("workers")
+export class Worker extends BaseEntity {
 @PrimaryGeneratedColumn()
 id!: number
 
 @Column()
-full_name!: string
+hours_worked!: number
 
 @Column()
-email!: string
-
-@Column()
-password!: string
-
-@Column()
-phone_number!: number
-
-@Column()
-is_active!: boolean
+client_id!: number
 
 @Column()
 created_at!: Date
