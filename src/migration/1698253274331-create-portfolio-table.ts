@@ -15,25 +15,26 @@ export class CreatePortfolioTable1698253274331 implements MigrationInterface {
                         generationStrategy: "increment",
                     },
                     {
-                        name: "date",
-                        type: "date",
+                        name: "name",
+                        type: "varchar",
+                        isNullable: false,
+                        isUnique: true
                     },
                     {
-                        name: "time",
-                        type: "time",
+                        name: "category",
+                        type: "enum",
+                        enum: ["tattoo", "piercing"],
+                        isNullable: false
                     },
                     {
-                        name: "status",
-                        type: "boolean",
-                        default: false
+                        name: "image",
+                        type: "varchar",
+                        isNullable: false
                     },
                     {
-                        name: "client_id",
-                        type: "int",
-                    },
-                    {
-                        name: "worker_id",
-                        type: "int",
+                        name: "price",
+                        type: "float",
+                        isNullable: false
                     },
                     {
                         name: "created-at",
@@ -47,20 +48,6 @@ export class CreatePortfolioTable1698253274331 implements MigrationInterface {
                         onUpdate: "CURRENT_TIMESTAMP"
                     },
                 ],
-                foreignKeys: [
-                    {
-                        columnNames: ["client_id"],
-                        referencedTableName: "clients",
-                        referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                    },
-                    {
-                        columnNames: ["worker_id"],
-                        referencedTableName: "workers",
-                        referencedColumnNames: ["id"],
-                        onDelete: "CASCADE",
-                    }
-                ]
             }),
             true
         );
