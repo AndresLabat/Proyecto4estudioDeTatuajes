@@ -1,5 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, JoinColumn } from "typeorm"
 import { User } from "./User"
+import { Worker } from "./Worker"
 
 @Entity("clients")
 export class Client extends BaseEntity {

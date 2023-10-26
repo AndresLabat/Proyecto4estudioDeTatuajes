@@ -1,7 +1,7 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, JoinColumn} from "typeorm"
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable } from "typeorm"
+import { User } from "./User"
 import { Client } from "./Client"
 import { Portfolio } from "./Portfolio"
-import { User } from "./User"
 
 @Entity("workers")
 export class Worker extends BaseEntity {
@@ -26,30 +26,29 @@ export class Worker extends BaseEntity {
 
     @ManyToMany(() => Client)
     @JoinTable({
-        name: "appointments",
+        name: "appointment",
         joinColumn: {
             name: "worker_id",
-            referencedColumnName: "id"
+            referencedColumnName: "id",
         },
         inverseJoinColumn: {
             name: "client_id",
-            referencedColumnName: "id"
-        }
+            referencedColumnName: "id",
+        },
     })
-    workerClients!: Client[]
+    workerClients!: Client[];
 
     @ManyToMany(() => Portfolio)
     @JoinTable({
         name: "portfolio_worker",
         joinColumn: {
             name: "worker_id",
-            referencedColumnName: "id"
+            referencedColumnName: "id",
         },
         inverseJoinColumn: {
             name: "portfolio_id",
-            referencedColumnName: "id"
-        }
+            referencedColumnName: "id",
+        },
     })
-    workerPortfolio!: Portfolio[]
-
+    workerPorfolio!: Portfolio[];
 }
