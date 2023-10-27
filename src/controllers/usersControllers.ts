@@ -166,6 +166,29 @@ const login = async (req: Request, res: Response) => {
 
 const profile = async (req: Request, res: Response) => {
 
+    try {
+        const email = req.token.email
+        const profileUser = await User.findOneBy({
+            email
+        })
+
+        return res.json ({
+            success: true,
+            message: "profile user retrieved",
+            data: {
+                full_name: profileUser?.full_name,
+                email: profileUser?.email,
+                phone_number: profileUser?.phone_number
+            }
+        })
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "user profile can't be retrieved",
+            error
+        })
+    }
 }
 
 const updateUser = async (req: Request, res: Response) => {
