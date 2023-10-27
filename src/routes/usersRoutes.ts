@@ -7,7 +7,7 @@ const router = Router();
 router.post('/register', register)
 router.post('/login', login)
 router.get('/profile', auth, profile)
-router.put('/update', updateUser)
+router.put('/update', auth, updateUser)
 
 router.get('/all', getAllUsers)
 
