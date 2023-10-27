@@ -17,7 +17,7 @@ export class CreateRoleUserTable1698249832821 implements MigrationInterface {
                     {
                         name: "role_id",
                         type: "int",
-                        isNullable: false
+                        default: 1
                     },
                     {
                         name: "user_id",
@@ -58,5 +58,4 @@ export class CreateRoleUserTable1698249832821 implements MigrationInterface {
     public async down(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.dropTable("role_user")
     }
-
 }

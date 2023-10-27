@@ -1,7 +1,6 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, OneToMany } from "typeorm"
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany, BeforeInsert, getConnection } from "typeorm"
 import { Role } from "./Role"
-import { Client } from "./Client"
-import { Worker } from "./Worker"
+import { Role_user } from "./Role_user"
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -29,12 +28,6 @@ export class User extends BaseEntity {
     @Column()
     updated_at!: Date
 
-    @OneToMany(() => Worker, (worker) => worker.user)
-    workers!: Worker[];
-
-    @OneToMany(() => Client, (client) => client.user)
-    clients!: Client[];
-
     @ManyToMany(() => Role)
     @JoinTable({
         name: "role_user",
@@ -48,6 +41,34 @@ export class User extends BaseEntity {
         }
     })
     userRoles!: Role[]
+
+    @ManyToMany(() => User)
+    @JoinTable({
+        name: "appointment",
+        joinColumn: {
+            name: "client_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "worker_id",
+            referencedColumnName: "id"
+        }
+    })
+    clientWorkers!: User[]
+
+    @ManyToMany(() => User)
+    @JoinTable({
+        name: "appointment",
+        joinColumn: {
+            name: "worker_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "client_id",
+            referencedColumnName: "id"
+        }
+    })
+    workerClients!: User[]
 }
 
 

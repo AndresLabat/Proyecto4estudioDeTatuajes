@@ -2,6 +2,7 @@ import { Request, Response } from "express-serve-static-core"
 import { User } from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Role_user } from "../models/Role_user";
 
 const register = async (req: Request, res: Response) => {
 
@@ -88,6 +89,10 @@ const register = async (req: Request, res: Response) => {
             email: registerBody.email,
             password: encrytedPassword,
             phone_number: registerBody.phone_number
+        }).save()
+
+        const newRole_User = await Role_user.create({
+            user_id: newUser.id,
         }).save()
 
         return res.json({

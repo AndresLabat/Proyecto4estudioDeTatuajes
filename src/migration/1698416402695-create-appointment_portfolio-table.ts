@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
-export class CreatePortfolioWorkerTable1698254437662 implements MigrationInterface {
+export class CreateAppointmentPortfolioTable1698416402695 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "portfolio_worker",
+                name: "appointment_portfolio",
                 columns: [
                     {
                         name: "id",
@@ -15,12 +15,12 @@ export class CreatePortfolioWorkerTable1698254437662 implements MigrationInterfa
                         generationStrategy: "increment",
                     },
                     {
-                        name: "portfolio_id",
+                        name: "appointment_id",
                         type: "int",
                         isNullable: false,
                     },
                     {
-                        name: "worker_id",
+                        name: "portfolio_id",
                         type: "int",
                         isNullable: false,
                     },
@@ -38,14 +38,14 @@ export class CreatePortfolioWorkerTable1698254437662 implements MigrationInterfa
                 ],
                 foreignKeys: [
                     {
-                        columnNames: ["portfolio_id"],
-                        referencedTableName: "portfolio",
+                        columnNames: ["appointment_id"],
+                        referencedTableName: "appointments",
                         referencedColumnNames: ["id"],
                         onDelete: "CASCADE",
                     },
                     {
-                        columnNames: ["worker_id"],
-                        referencedTableName: "workers",
+                        columnNames: ["portfolio_id"],
+                        referencedTableName: "portfolio",
                         referencedColumnNames: ["id"],
                         onDelete: "CASCADE",
                     }
@@ -56,7 +56,6 @@ export class CreatePortfolioWorkerTable1698254437662 implements MigrationInterfa
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("portfolio_worker")
+        await queryRunner.dropTable("appointment_portfolio")
     }
-
 }

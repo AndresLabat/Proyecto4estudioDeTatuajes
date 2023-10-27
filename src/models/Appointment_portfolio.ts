@@ -1,20 +1,19 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm"
 
-@Entity("portfolio_worker")
-export class Portfolio_worker extends BaseEntity {
+@Entity("role_user")
+export class Appointment_porfolio extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number
 
     @Column()
-    portfolio_id!: number
+    appointment_id!: number
 
     @Column()
-    worker_id!: number
+    portfolio_id!: number
 
     @Column()
     created_at!: Date
 
     @Column()
     updated_at!: Date
-
 }
