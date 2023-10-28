@@ -2,7 +2,6 @@ import { Request, Response } from "express-serve-static-core"
 import { User } from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Role_user } from "../models/Role_user";
 
 const register = async (req: Request, res: Response) => {
 
@@ -91,10 +90,6 @@ const register = async (req: Request, res: Response) => {
             phone_number: registerBody.phone_number
         }).save()
 
-        const newRole_User = await Role_user.create({
-            user_id: newUser.id,
-        }).save()
-
         return res.json({
             success: true,
             message: "user registered succesfully",
@@ -139,15 +134,16 @@ const login = async (req: Request, res: Response) => {
             })
         }
 
-        const roles = loginByEmail.userRoles.map(role => role.role);
+        // const roles = loginByEmail.userRoles.map(role => role.role);
 
         const token = jwt.sign({
             id: loginByEmail.id,
             email: loginByEmail.email,
-            role: roles
+            // role: roles
         }, "secreto", {
             expiresIn: "5h"
         })
+
 
         return res.json({
             success: true,
@@ -172,7 +168,7 @@ const profile = async (req: Request, res: Response) => {
             email
         })
 
-        return res.json ({
+        return res.json({
             success: true,
             message: "profile user retrieved",
             data: {
@@ -300,6 +296,33 @@ const updateUser = async (req: Request, res: Response) => {
 
 const getAllUsers = async (req: Request, res: Response) => {
 
+    try {
+        const users = await User.find()
+
+        console.log(users);
+        
+
+        if (users.length == 0) {
+            return res.json({
+                success: true,
+                message: "There are no registered users."
+            })
+        }
+
+        return res.json({
+            success: true,
+            message: "Here you can see all the users.",
+            data: users
+            
+        })
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "Unable to display the users.",
+            error
+        })
+    }
 }
 
 export { register, login, profile, updateUser, getAllUsers } 

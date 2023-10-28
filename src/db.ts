@@ -1,17 +1,15 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { CreateUsersTable1698247656405 } from "./migration/1698247656405-create-users-table";
-import { CreateRolesTable1698249114687 } from "./migration/1698249114687-create-roles-table";
-import { CreateRoleUserTable1698249832821 } from "./migration/1698249832821-create-role_user-table";
-import { CreateAppointmentsTable1698252374419 } from "./migration/1698252374419-create-appointments-table";
-import { CreatePortfolioTable1698253274331 } from "./migration/1698253274331-create-portfolio-table";
-import { CreateAppointmentPortfolioTable1698416402695 } from "./migration/1698416402695-create-appointment_portfolio-table";
 import { Appointment } from "./models/Appointment";
 import { Portfolio } from "./models/Portfolio";
-import { Role_user } from "./models/Role_user";
 import { Role } from "./models/Role";
 import { User } from "./models/User";
 import { Appointment_porfolio } from "./models/Appointment_portfolio";
+import { CreateRolesTable1698496299691 } from "./migration/1698496299691-create-roles-table";
+import { CreateUsersTable1698496415236 } from "./migration/1698496415236-create-users-table";
+import { CreateAppointmentsTable1698496506955 } from "./migration/1698496506955-create-appointments-table";
+import { CreatePortfolioTable1698496603673 } from "./migration/1698496603673-create-portfolio-table";
+import { CreateAppointmentPortfolioTable1698496659685 } from "./migration/1698496659685-create-appointment_portfolio-table";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -20,9 +18,9 @@ export const AppDataSource = new DataSource({
     username: "root",
     password: "1234",
     database: "tattoo_studio_db",
-    migrations: [CreateUsersTable1698247656405, CreateRolesTable1698249114687, CreateRoleUserTable1698249832821,
-        CreateAppointmentsTable1698252374419, CreatePortfolioTable1698253274331, CreateAppointmentPortfolioTable1698416402695],
-    entities: [Appointment, Portfolio, Role_user, Role, User, Appointment_porfolio],
+    migrations: [CreateRolesTable1698496299691, CreateUsersTable1698496415236, CreateAppointmentsTable1698496506955,
+        CreatePortfolioTable1698496603673, CreateAppointmentPortfolioTable1698496659685],
+    entities: [Appointment, Portfolio, Role, User, Appointment_porfolio],
     synchronize: false,
     logging: false,
 });

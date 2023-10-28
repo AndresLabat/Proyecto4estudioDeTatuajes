@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
-export class CreatePortfolioTable1698253274331 implements MigrationInterface {
+export class CreateUsersTable1698496415236 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "portfolio",
+                name: "users",
                 columns: [
                     {
                         name: "id",
@@ -15,26 +15,39 @@ export class CreatePortfolioTable1698253274331 implements MigrationInterface {
                         generationStrategy: "increment",
                     },
                     {
-                        name: "name",
+                        name: "full_name",
                         type: "varchar",
-                        isNullable: false,
-                        isUnique: true
-                    },
-                    {
-                        name: "category",
-                        type: "enum",
-                        enum: ["tattoo", "piercing"],
+                        length: "50",
                         isNullable: false
                     },
                     {
-                        name: "image",
+                        name: "email",
                         type: "varchar",
+                        length: "100",
+                        isUnique: true,
                         isNullable: false
                     },
                     {
-                        name: "price",
-                        type: "float",
+                        name: "password",
+                        type: "varchar",
+                        length: "100",
                         isNullable: false
+                    },
+                    {
+                        name: "phone_number",
+                        type: "int",
+                        length: "20",
+                        isNullable: false
+                    },
+                    {
+                        name: "is_active",
+                        type: "boolean",
+                        default: true
+                    },
+                    {
+                        name: "role_id",
+                        type: "int",
+                        default: 1
                     },
                     {
                         name: "created_at",
@@ -48,13 +61,20 @@ export class CreatePortfolioTable1698253274331 implements MigrationInterface {
                         onUpdate: "CURRENT_TIMESTAMP"
                     },
                 ],
+                foreignKeys: [
+                    {
+                        columnNames: ["role_id"],
+                        referencedTableName: "roles",
+                        referencedColumnNames: ["id"],
+                        onDelete: "CASCADE",
+                    }
+                ]
             }),
             true
         );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("portfolio")
+        await queryRunner.dropTable("users")
     }
-
 }

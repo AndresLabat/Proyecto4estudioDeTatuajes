@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm"
 
-export class CreateRolesTable1698249114687 implements MigrationInterface {
+export class CreatePortfolioTable1698496603673 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "roles",
+                name: "portfolio",
                 columns: [
                     {
                         name: "id",
@@ -15,15 +15,26 @@ export class CreateRolesTable1698249114687 implements MigrationInterface {
                         generationStrategy: "increment",
                     },
                     {
-                        name: "role",
-                        type: "enum",
-                        enum: ["user", "admin", "super_admin"],
-                        default: `"user"`
+                        name: "name",
+                        type: "varchar",
+                        isNullable: false,
+                        isUnique: true
                     },
                     {
-                        name: "privilege",
+                        name: "category",
+                        type: "enum",
+                        enum: ["tattoo", "piercing"],
+                        isNullable: false
+                    },
+                    {
+                        name: "image",
                         type: "varchar",
-                        length: "255",
+                        isNullable: false
+                    },
+                    {
+                        name: "price",
+                        type: "float",
+                        isNullable: false
                     },
                     {
                         name: "created_at",
@@ -43,6 +54,7 @@ export class CreateRolesTable1698249114687 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("roles")
+        await queryRunner.dropTable("portfolio")
     }
+
 }
