@@ -19,12 +19,14 @@ export class Appointment extends BaseEntity {
     worker_id!: number
 
     @Column()
-    created_at!: Date
+    client_id!: number
 
-    @Column()
-    updated_at!: Date
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+    created_at!: Date;
 
-    
+    @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP", onUpdate: "CURRENT_TIMESTAMP" })
+    updated_at!: Date;
+
     @ManyToMany(() => Portfolio)
     @JoinTable({
         name: "appointment_portfolio",

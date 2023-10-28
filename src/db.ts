@@ -18,9 +18,20 @@ export const AppDataSource = new DataSource({
     username: "root",
     password: "1234",
     database: "tattoo_studio_db",
-    migrations: [CreateRolesTable1698496299691, CreateUsersTable1698496415236, CreateAppointmentsTable1698496506955,
-        CreatePortfolioTable1698496603673, CreateAppointmentPortfolioTable1698496659685],
-    entities: [Appointment, Portfolio, Role, User, Appointment_porfolio],
+    migrations: [
+        CreateRolesTable1698496299691,
+        CreateUsersTable1698496415236,
+        CreateAppointmentsTable1698496506955,
+        CreatePortfolioTable1698496603673,
+        CreateAppointmentPortfolioTable1698496659685
+    ],
+    entities: [
+        Role, 
+        User, 
+        Appointment, 
+        Portfolio, 
+        Appointment_porfolio
+    ],
     synchronize: false,
     logging: false,
 });

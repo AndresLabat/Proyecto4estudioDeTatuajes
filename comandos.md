@@ -33,9 +33,3 @@ Migraciones (tener en cuenta):
 `isNullable: false`
 `isUnique: true`
 `default: "CURRENT_TIMESTAMP"`
-
-
-
-
-
-
