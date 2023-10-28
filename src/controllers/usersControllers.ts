@@ -18,6 +18,13 @@ const register = async (req: Request, res: Response) => {
             });
         }
 
+        if (registerBody.full_name.length == 0) {
+            return res.json({
+                success: true,
+                mensaje: 'name incorrect, The name must have at least one letter, try again'
+            });
+        }
+
         if (registerBody.full_name.length > 50) {
             return res.json({
                 success: true,
@@ -117,7 +124,7 @@ const login = async (req: Request, res: Response) => {
 
         const loginByEmail = await User.findOne({
             where: { email },
-            relations: ["userRoles"]
+            relations: ["role"]
         });
 
         if (!loginByEmail) {
@@ -134,12 +141,14 @@ const login = async (req: Request, res: Response) => {
             })
         }
 
-        // const roles = loginByEmail.userRoles.map(role => role.role);
+        const roleName = loginByEmail.role.role_name;
+
+        console.log(roleName);
 
         const token = jwt.sign({
             id: loginByEmail.id,
             email: loginByEmail.email,
-            // role: roles
+            role: roleName
         }, "secreto", {
             expiresIn: "5h"
         })
@@ -207,27 +216,6 @@ const updateUser = async (req: Request, res: Response) => {
             return res.json({
                 success: true,
                 mensaje: 'Name is too long. Please insert a shorter name (maximum 50 characters).'
-            });
-        }
-
-        if (typeof (bodyUser.email) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: 'Email is incorrect; only strings are allowed. Please try again'
-            });
-        }
-
-        if (bodyUser.email.length > 100) {
-            return res.json({
-                success: true,
-                mensaje: 'Name is too long. Please insert a shorter name (maximum 100 characters).'
-            });
-        }
-
-        if (!emailRegex.test(req.body.email)) {
-            return res.json({
-                success: true,
-                mensaje: 'Email is incorrect. Please try again.'
             });
         }
 
@@ -299,9 +287,6 @@ const getAllUsers = async (req: Request, res: Response) => {
     try {
         const users = await User.find()
 
-        console.log(users);
-        
-
         if (users.length == 0) {
             return res.json({
                 success: true,
@@ -309,11 +294,23 @@ const getAllUsers = async (req: Request, res: Response) => {
             })
         }
 
+        const transformedUsers = users.map((users) => {
+            return {
+                id: users.id,
+                email: users.email,
+                name: users.full_name,
+                phone_number: users.phone_number,
+                is_active: users.is_active,
+                role_id:users.is_active,
+                created_at:users.is_active,
+                updated_at:users.is_active
+            };
+        });
+
         return res.json({
             success: true,
             message: "Here you can see all the users.",
-            data: users
-            
+            data: transformedUsers
         })
 
     } catch (error) {
