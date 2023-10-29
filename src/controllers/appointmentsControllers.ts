@@ -19,14 +19,14 @@ const createAppointment = async (req: Request, res: Response) => {
             relations: ["role"]
         });
 
-        if(loginByEmail?.role.role_name != "admin"){
+        if (loginByEmail?.role.role_name != "admin") {
             return res.json({
                 success: true,
                 message: "sorry, this user isn't a worker, try again"
             })
         }
 
-        if(id == loginByEmail.id){
+        if (id == loginByEmail.id) {
             return res.json({
                 success: true,
                 message: "sorry, you can't create a appointment with yourself"
@@ -43,7 +43,7 @@ const createAppointment = async (req: Request, res: Response) => {
         //         message: "sorry, you can't create a appointment with yourself"
         //     })
         // }
-            
+
         const createNewAppointment = await Appointment.create({
             date: appointmentBody.date,
             time: appointmentBody.time,
@@ -63,7 +63,7 @@ const createAppointment = async (req: Request, res: Response) => {
                 updated_at: createNewAppointment.updated_at
             }
         })
-        
+
     } catch (error) {
         return res.json({
             success: false,
@@ -78,31 +78,88 @@ const updateAppointment = async (req: Request, res: Response) => {
     try {
         const client_id = req.token.id
         const body = req.body
-
         const appointmentId = body.id
         const date = body.date
         const time = body.time
         const email = body.email
 
-        //----------------------------------------------------------------
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        if (typeof (email) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: 'email incorrect, you can put only strings, try again'
+            });
+        }
+
+        if (email.length > 100) {
+            return res.json({
+                success: true,
+                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
+            });
+        }
+
+        if (!emailRegex.test(email)) {
+            return res.json({
+                success: true,
+                mensaje: 'email format incorrect, try again'
+            });
+        }
+
         const findWorker_id = await User.findOneBy({
             email
         })
 
         const worker_id = findWorker_id?.id
-        //----------------------------------------------------------------
+
+        if (typeof (appointmentId) !== "number") {
+            return res.json({
+                success: true,
+                mensaje: "id incorrect, you can put only numbers, try again"
+            });
+        }
+
+        if (typeof (date) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: "date incorrect, you can put only strings, try again"
+            });
+        }
+
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+        if (!dateRegex.test(date)) {
+            return res.json({
+                success: true,
+                mensaje: "date incorrect, The date format should be YYYY-MM-DD, try again"
+            });
+        }
+
+        if (typeof (time) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: "time incorrect, you can put only strings, try again"
+            });
+        }
+
+        const timeRegex = /^\d{2}:\d{2}:\d{2}$/;
+
+        if (!timeRegex.test(time)) {
+            return res.json({
+                success: true,
+                mensaje: "time incorrect, The time format should be HH:MM:SS, try again"
+            });
+        }
 
         const appointmentsClient = await Appointment.findBy({
             client_id,
         })
 
-        const appointmentsId = await appointmentsClient.map((object)=>
+        const appointmentsId = await appointmentsClient.map((object) =>
             object.id
         )
 
-        console.log(appointmentsId);
-        
-        if(!appointmentsId.includes(appointmentId)){
+        if (!appointmentsId.includes(appointmentId)) {
             return res.json({
                 success: true,
                 message: "appointment updated not succesfully, incorrect id"
@@ -111,7 +168,7 @@ const updateAppointment = async (req: Request, res: Response) => {
 
         await Appointment.update({
             id: appointmentId
-        },{
+        }, {
             date,
             time,
             worker_id
@@ -133,7 +190,7 @@ const updateAppointment = async (req: Request, res: Response) => {
                 updated_at: dataAppointmentUpdated?.updated_at
             }
         })
-        
+
     } catch (error) {
         return res.json({
             success: false,
@@ -149,7 +206,7 @@ const deleteAppointment = async (req: Request, res: Response) => {
         const deleteById = req.body.id
         const clientId = req.token.id
 
-        if(!deleteById){
+        if (!deleteById) {
             return res.json({
                 success: true,
                 message: "you must insert one id",
@@ -162,11 +219,11 @@ const deleteAppointment = async (req: Request, res: Response) => {
         })
 
         // accede a los ids de esas citas y metelos en un array
-        const appointments_id = getUser.map((appointment)=>
-        appointment.id
-        ) 
+        const appointments_id = getUser.map((appointment) =>
+            appointment.id
+        )
 
-        if(!appointments_id.includes(deleteById)){
+        if (!appointments_id.includes(deleteById)) {
             return res.json("no se puede borrar")
         }
 
@@ -178,7 +235,7 @@ const deleteAppointment = async (req: Request, res: Response) => {
             success: true,
             message: "appointment deleted succesfully",
         })
-        
+
     } catch (error) {
         return res.json({
             success: false,
@@ -188,4 +245,4 @@ const deleteAppointment = async (req: Request, res: Response) => {
     }
 }
 
-export{getAppointment, createAppointment, updateAppointment, deleteAppointment}
+export { getAppointment, createAppointment, updateAppointment, deleteAppointment }
