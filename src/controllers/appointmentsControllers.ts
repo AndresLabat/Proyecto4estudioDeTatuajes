@@ -2,9 +2,45 @@ import { Request, Response } from "express-serve-static-core"
 import { Appointment } from "../models/Appointment"
 import { User } from "../models/User"
 
-const getAppointment = async (req: Request, res: Response) => {
+const getAppointmentsUser = async (req: Request, res: Response) => {
 
+    try {
+        const id = req.token.id
 
+        const appointmentsUser = await Appointment.findBy({
+            client_id: id
+        })
+
+        const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
+            const { status, worker_id, client_id, ...rest } = obj;
+            
+            const worker = await User.findOneBy({ 
+                id: worker_id 
+            });
+
+            if (worker) {
+                const email = worker.email;
+                const is_active = worker.is_active;
+                return { ...rest, email, is_active };
+            }
+            else {
+                return null
+            }
+        }));
+
+        return res.json({
+            success: true,
+            message: "Here are all your appointments",
+            data: appointmentsUserForShows
+        });
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "appointments can't be getted, try again",
+            error
+        })
+    }
 }
 
 const createAppointment = async (req: Request, res: Response) => {
@@ -50,6 +86,13 @@ const createAppointment = async (req: Request, res: Response) => {
             relations: ["role"]
         });
 
+        if (loginByEmail?.is_active !== true){
+            return res.json({
+                success: true,
+                message: "this worker not exist"
+            })
+        }
+
         if (loginByEmail?.role.role_name != "admin") {
             return res.json({
                 success: true,
@@ -63,7 +106,7 @@ const createAppointment = async (req: Request, res: Response) => {
                 message: "sorry, you can't create a appointment with yourself"
             })
         }
- 
+
         if (!date) {
             return res.json({
                 success: true,
@@ -86,7 +129,7 @@ const createAppointment = async (req: Request, res: Response) => {
                 mensaje: "date incorrect, The date format should be YYYY-MM-DD, try again"
             });
         }
-        
+
         if (!time) {
             return res.json({
                 success: true,
@@ -194,8 +237,15 @@ const updateAppointment = async (req: Request, res: Response) => {
             email
         })
 
+        if (findWorker_id?.is_active !== true){
+            return res.json({
+                success: true,
+                message: "this worker not exist"
+            })
+        }
+
         const worker_id = findWorker_id?.id
-        
+
         if (!appointmentId) {
             return res.json({
                 success: true,
@@ -270,6 +320,17 @@ const updateAppointment = async (req: Request, res: Response) => {
                 message: "appointment updated not succesfully, incorrect id"
             })
         }
+
+        // VALIDACIONES DE FECHAS Y HORAS A HACER A TRAVES DE LA LIBRERIA 
+        // https://www.npmjs.com/package/dayjs
+
+
+        // if(createNewAppointment.date ==   && createNewAppointment.time == ){
+        //     return res.json({
+        //         success: true,
+        //         message: "sorry, you can't create a appointment with yourself"
+        //     })
+        // }
 
         await Appointment.update({
             id: appointmentId
@@ -355,4 +416,4 @@ const deleteAppointment = async (req: Request, res: Response) => {
     }
 }
 
-export { getAppointment, createAppointment, updateAppointment, deleteAppointment }
+export { getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment }

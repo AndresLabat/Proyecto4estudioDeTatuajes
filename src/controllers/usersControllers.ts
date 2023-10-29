@@ -127,6 +127,13 @@ const login = async (req: Request, res: Response) => {
             relations: ["role"]
         });
 
+        if (loginByEmail?.is_active !== true){
+            return res.json({
+                success: true,
+                message: "this user not exist"
+            })
+        }
+
         if (!loginByEmail) {
             return res.json({
                 success: true,
