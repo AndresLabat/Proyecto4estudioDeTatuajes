@@ -10,9 +10,33 @@ const getAppointment = async (req: Request, res: Response) => {
 const createAppointment = async (req: Request, res: Response) => {
 
     try {
-        const appointmentBody = req.body
+        const date = req.body.date
+        const time = req.body.time
         const email = req.body.email
         const id = req.token.id
+
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        if (typeof (email) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: 'email incorrect, you can put only strings, try again'
+            });
+        }
+
+        if (email.length > 100) {
+            return res.json({
+                success: true,
+                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
+            });
+        }
+
+        if (!emailRegex.test(email)) {
+            return res.json({
+                success: true,
+                mensaje: 'email format incorrect, try again'
+            });
+        }
 
         const loginByEmail = await User.findOne({
             where: { email },
@@ -33,7 +57,39 @@ const createAppointment = async (req: Request, res: Response) => {
             })
         }
 
-        // VALIDACIONES DE FECHAS Y HORAS A HACER A TRAVAS DE LA LIBRERIA 
+        if (typeof (date) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: "date incorrect, you can put only strings, try again"
+            });
+        }
+
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+        if (!dateRegex.test(date)) {
+            return res.json({
+                success: true,
+                mensaje: "date incorrect, The date format should be YYYY-MM-DD, try again"
+            });
+        }
+
+        if (typeof (time) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: "time incorrect, you can put only strings, try again"
+            });
+        }
+
+        const timeRegex = /^\d{2}:\d{2}:\d{2}$/;
+
+        if (!timeRegex.test(time)) {
+            return res.json({
+                success: true,
+                mensaje: "time incorrect, The time format should be HH:MM:SS, try again"
+            });
+        }
+
+        // VALIDACIONES DE FECHAS Y HORAS A HACER A TRAVES DE LA LIBRERIA 
         // https://www.npmjs.com/package/dayjs
 
 
@@ -45,8 +101,8 @@ const createAppointment = async (req: Request, res: Response) => {
         // }
 
         const createNewAppointment = await Appointment.create({
-            date: appointmentBody.date,
-            time: appointmentBody.time,
+            date,
+            time,
             worker_id: loginByEmail.id,
             client_id: id
         }).save()
@@ -213,12 +269,10 @@ const deleteAppointment = async (req: Request, res: Response) => {
             })
         }
 
-        // me traes todas las citas del cliente que te digo:
         const getUser = await Appointment.findBy({
             client_id: clientId
         })
 
-        // accede a los ids de esas citas y metelos en un array
         const appointments_id = getUser.map((appointment) =>
             appointment.id
         )
