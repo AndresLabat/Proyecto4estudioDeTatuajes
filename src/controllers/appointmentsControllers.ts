@@ -17,6 +17,13 @@ const createAppointment = async (req: Request, res: Response) => {
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
+        if (!email) {
+            return res.json({
+                success: true,
+                message: "you must insert an email",
+            })
+        }
+
         if (typeof (email) !== "string") {
             return res.json({
                 success: true,
@@ -56,6 +63,13 @@ const createAppointment = async (req: Request, res: Response) => {
                 message: "sorry, you can't create a appointment with yourself"
             })
         }
+ 
+        if (!date) {
+            return res.json({
+                success: true,
+                message: "you must insert a date",
+            })
+        }
 
         if (typeof (date) !== "string") {
             return res.json({
@@ -71,6 +85,13 @@ const createAppointment = async (req: Request, res: Response) => {
                 success: true,
                 mensaje: "date incorrect, The date format should be YYYY-MM-DD, try again"
             });
+        }
+        
+        if (!time) {
+            return res.json({
+                success: true,
+                message: "you must insert a time",
+            })
         }
 
         if (typeof (time) !== "string") {
@@ -141,6 +162,13 @@ const updateAppointment = async (req: Request, res: Response) => {
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
+        if (!email) {
+            return res.json({
+                success: true,
+                message: "you must insert an email",
+            })
+        }
+
         if (typeof (email) !== "string") {
             return res.json({
                 success: true,
@@ -167,12 +195,26 @@ const updateAppointment = async (req: Request, res: Response) => {
         })
 
         const worker_id = findWorker_id?.id
+        
+        if (!appointmentId) {
+            return res.json({
+                success: true,
+                message: "you must insert an id",
+            })
+        }
 
         if (typeof (appointmentId) !== "number") {
             return res.json({
                 success: true,
                 mensaje: "id incorrect, you can put only numbers, try again"
             });
+        }
+
+        if (!date) {
+            return res.json({
+                success: true,
+                message: "you must insert a date",
+            })
         }
 
         if (typeof (date) !== "string") {
@@ -189,6 +231,13 @@ const updateAppointment = async (req: Request, res: Response) => {
                 success: true,
                 mensaje: "date incorrect, The date format should be YYYY-MM-DD, try again"
             });
+        }
+
+        if (!time) {
+            return res.json({
+                success: true,
+                message: "you must insert a time",
+            })
         }
 
         if (typeof (time) !== "string") {
@@ -265,8 +314,15 @@ const deleteAppointment = async (req: Request, res: Response) => {
         if (!deleteById) {
             return res.json({
                 success: true,
-                message: "you must insert one id",
+                message: "you must insert an id",
             })
+        }
+
+        if (typeof (deleteById) !== "number") {
+            return res.json({
+                success: true,
+                mensaje: "id incorrect, you can put only numbers, try again"
+            });
         }
 
         const getUser = await Appointment.findBy({
