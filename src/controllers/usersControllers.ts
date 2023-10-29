@@ -143,8 +143,6 @@ const login = async (req: Request, res: Response) => {
 
         const roleName = loginByEmail.role.role_name;
 
-        console.log(roleName);
-
         const token = jwt.sign({
             id: loginByEmail.id,
             email: loginByEmail.email,

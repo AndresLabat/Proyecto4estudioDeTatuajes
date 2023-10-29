@@ -4,6 +4,7 @@ import { User } from "../models/User"
 
 const getAppointment = async (req: Request, res: Response) => {
 
+
 }
 
 const createAppointment = async (req: Request, res: Response) => {
@@ -74,6 +75,72 @@ const createAppointment = async (req: Request, res: Response) => {
 
 const updateAppointment = async (req: Request, res: Response) => {
 
+    try {
+        const client_id = req.token.id
+        const body = req.body
+
+        const appointmentId = body.id
+        const date = body.date
+        const time = body.time
+        const email = body.email
+
+        //----------------------------------------------------------------
+        const findWorker_id = await User.findOneBy({
+            email
+        })
+
+        const worker_id = findWorker_id?.id
+        //----------------------------------------------------------------
+
+        const appointmentsClient = await Appointment.findBy({
+            client_id,
+        })
+
+        const appointmentsId = await appointmentsClient.map((object)=>
+            object.id
+        )
+
+        console.log(appointmentsId);
+        
+        if(!appointmentsId.includes(appointmentId)){
+            return res.json({
+                success: true,
+                message: "appointment updated not succesfully, incorrect id"
+            })
+        }
+
+        await Appointment.update({
+            id: appointmentId
+        },{
+            date,
+            time,
+            worker_id
+        })
+
+        const dataAppointmentUpdated = await Appointment.findOneBy({
+            id: appointmentId
+        })
+
+        return res.json({
+            success: true,
+            message: "appointment created succesfully",
+            data: {
+                date,
+                time,
+                email,
+                id: appointmentId,
+                created_at: dataAppointmentUpdated?.created_at,
+                updated_at: dataAppointmentUpdated?.updated_at
+            }
+        })
+        
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "appointment can't be updated, try again",
+            error
+        })
+    }
 }
 
 const deleteAppointment = async (req: Request, res: Response) => {
