@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { auth } from "../middleware/auth";
 import { createAppointment, deleteAppointment, getAppointmentsByWorker, getAppointmentsUser, 
-    updateAppointment} from "../controllers/appointmentsControllers";
+    updateAppointment, getallAppointments, getAppointmentDetail } from "../controllers/appointmentsControllers";
 import { isSuperAdmin } from "../middleware/isSuperAdmin";
 import { isAdmin } from "../middleware/isAdmin";
 
@@ -12,6 +12,7 @@ router.post('/create',auth, createAppointment)
 router.put('/update',auth, updateAppointment)
 router.delete('/delete',auth, deleteAppointment)
 router.get('/byWorker',auth, isAdmin, getAppointmentsByWorker)
-
+router.get('/bySuperAdmin',auth, isSuperAdmin, getallAppointments)
+router.get('/detail',auth, getAppointmentDetail)
 
 export {router}

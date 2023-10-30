@@ -1,6 +1,8 @@
 import { Request, Response } from "express-serve-static-core"
 import { Appointment } from "../models/Appointment"
 import { User } from "../models/User"
+import { Portfolio } from "../models/Portfolio"
+import { Appointment_portfolio } from "../models/Appointment_portfolio"
 
 const getAppointmentsUser = async (req: Request, res: Response) => {
 
@@ -19,9 +21,11 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
             });
 
             if (worker) {
+                const full_name = worker.full_name
                 const email = worker.email;
                 const is_active = worker.is_active;
-                return { ...rest, email, is_active };
+                // producto a consumir del portfolio
+                return { full_name, email, is_active,...rest };
             }
             else {
                 return null
@@ -49,6 +53,7 @@ const createAppointment = async (req: Request, res: Response) => {
         const date = req.body.date
         const time = req.body.time
         const email = req.body.email
+        const purchase_Name = req.body.name
         const id = req.token.id
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -67,10 +72,17 @@ const createAppointment = async (req: Request, res: Response) => {
             });
         }
 
+        if (email.length == 0) {
+            return res.json({
+                success: true,
+                mensaje: 'email too short, try to insert a larger name, max 100 characters'
+            });
+        }
+
         if (email.length > 100) {
             return res.json({
                 success: true,
-                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
+                mensaje: 'email too long, try to insert a shorter name, max 100 characters'
             });
         }
 
@@ -153,6 +165,35 @@ const createAppointment = async (req: Request, res: Response) => {
             });
         }
 
+        
+        if (!purchase_Name) {
+            return res.json({
+                success: true,
+                message: "you must insert an name",
+            })
+        }
+
+        if (typeof (purchase_Name) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: 'name incorrect, you can put only strings, try again'
+            });
+        }
+
+        if (purchase_Name.length == 0) {
+            return res.json({
+                success: true,
+                mensaje: 'name too short, try to insert a larger name, max 100 characters'
+            });
+        }
+
+        if (purchase_Name.length > 100) {
+            return res.json({
+                success: true,
+                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
+            });
+        }
+
         // VALIDACIONES DE FECHAS Y HORAS A HACER A TRAVES DE LA LIBRERIA 
         // https://www.npmjs.com/package/dayjs
 
@@ -171,6 +212,15 @@ const createAppointment = async (req: Request, res: Response) => {
             client_id: id
         }).save()
 
+        const getPortfolio = await Portfolio.findOneBy({
+            name:purchase_Name
+        })
+
+        const createAppointment = await Appointment_portfolio.create({
+            appointment_id:createNewAppointment.id,
+            portfolio_id: getPortfolio?.id
+        }).save()
+
         return res.json({
             success: true,
             message: "appointment created succesfully",
@@ -179,6 +229,8 @@ const createAppointment = async (req: Request, res: Response) => {
                 time: createNewAppointment.time,
                 email: email,
                 id: createNewAppointment.id,
+                purchase_Name: getPortfolio?.name,
+                price: getPortfolio?.price,
                 created_at: createNewAppointment.created_at,
                 updated_at: createNewAppointment.updated_at
             }
@@ -453,7 +505,6 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
     }
 }
 
-// obtener todas las citas como super admin 
 const getallAppointments = async (req: Request, res: Response) => {
   
 
@@ -495,7 +546,8 @@ const getallAppointments = async (req: Request, res: Response) => {
     }
 }
 
-
+const getAppointmentDetail = async (req: Request, res: Response) => {
+}
 
 export { getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment,
-    getAppointmentsByWorker, getallAppointments }
+    getAppointmentsByWorker, getallAppointments, getAppointmentDetail }
