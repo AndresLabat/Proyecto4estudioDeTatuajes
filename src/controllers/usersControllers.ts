@@ -527,6 +527,42 @@ const createWorker = async (req: Request, res: Response) => {
     }
 }
 
+const deleteUserBySuperAdmin = async (req: Request, res: Response) => {
+
+    try {
+        const deleteById = req.body.id
+
+        if (!deleteById) {
+            return res.json({
+                success: true,
+                message: "you must insert one id",
+            })
+        }
+
+        if (typeof (deleteById) !== "number") {
+            return res.json({
+                success: true,
+                mensaje: "id incorrect, you can put only numbers, try again"
+            });
+        }
+
+        const deleteAppointmentById = await User.delete({
+            id: deleteById
+        })
+
+        return res.json({
+            success: true,
+            message: "The user was successfully deleted.",
+        })
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "Unable to delete the user, please try again.",
+            error
+        })
+    }
+}
 
 export { register, login, profile, updateUser, getAllUsers, 
-    getAllWorkers, createWorker } 
+    getAllWorkers, createWorker, deleteUserBySuperAdmin } 
