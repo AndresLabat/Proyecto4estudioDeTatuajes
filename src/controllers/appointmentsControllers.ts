@@ -9,13 +9,17 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
     try {
         const id = req.token.id
 
-        const appointmentsUser = await Appointment.findBy({
-            client_id: id
+        const appointmentsUser = await Appointment.find({
+            where:{
+                client_id: id
+            },
+            relations: ["appointmentPortfolios"]
         })
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
-            const { status, worker_id, client_id, ...rest } = obj;
-
+            const { status, worker_id, client_id, appointmentPortfolios, ...rest } = obj;
+            const nameObject = obj.appointmentPortfolios.map((obj)=>obj.name)
+            
             const worker = await User.findOneBy({
                 id: worker_id
             });
@@ -24,8 +28,8 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
                 const full_name = worker.full_name
                 const email = worker.email;
                 const is_active = worker.is_active;
-                // producto a consumir del portfolio
-                return { full_name, email, is_active,...rest };
+                const name = nameObject[0]
+                return { full_name, email, name, is_active,...rest };
             }
             else {
                 return null
