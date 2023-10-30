@@ -11,13 +11,15 @@ import { CreateAppointmentsTable1698496506955 } from "./migration/1698496506955-
 import { CreatePortfolioTable1698496603673 } from "./migration/1698496603673-create-portfolio-table";
 import { CreateAppointmentPortfolioTable1698496659685 } from "./migration/1698496659685-create-appointment_portfolio-table";
 
+type database = "mysql" | "mariadb"
+
 export const AppDataSource = new DataSource({
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "1234",
-    database: "tattoo_studio_db",
+    type: process.env.DB_TYPE as database,
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT as string),
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     migrations: [
         CreateRolesTable1698496299691,
         CreateUsersTable1698496415236,

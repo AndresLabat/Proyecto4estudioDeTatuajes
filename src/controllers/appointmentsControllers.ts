@@ -13,9 +13,9 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
             const { status, worker_id, client_id, ...rest } = obj;
-            
-            const worker = await User.findOneBy({ 
-                id: worker_id 
+
+            const worker = await User.findOneBy({
+                id: worker_id
             });
 
             if (worker) {
@@ -86,7 +86,7 @@ const createAppointment = async (req: Request, res: Response) => {
             relations: ["role"]
         });
 
-        if (loginByEmail?.is_active !== true){
+        if (loginByEmail?.is_active !== true) {
             return res.json({
                 success: true,
                 message: "this worker not exist"
@@ -197,11 +197,7 @@ const updateAppointment = async (req: Request, res: Response) => {
 
     try {
         const client_id = req.token.id
-        const body = req.body
-        const appointmentId = body.id
-        const date = body.date
-        const time = body.time
-        const email = body.email
+        const { id: appointmentId, date, time, email } = req.body
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -237,7 +233,7 @@ const updateAppointment = async (req: Request, res: Response) => {
             email
         })
 
-        if (findWorker_id?.is_active !== true){
+        if (findWorker_id?.is_active !== true) {
             return res.json({
                 success: true,
                 message: "this worker not exist"

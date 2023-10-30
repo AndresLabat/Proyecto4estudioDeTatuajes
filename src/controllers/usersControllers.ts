@@ -127,7 +127,7 @@ const login = async (req: Request, res: Response) => {
             relations: ["role"]
         });
 
-        if (loginByEmail?.is_active !== true){
+        if (loginByEmail?.is_active !== true) {
             return res.json({
                 success: true,
                 message: "this user not exist"
@@ -149,12 +149,13 @@ const login = async (req: Request, res: Response) => {
         }
 
         const roleName = loginByEmail.role.role_name;
+        const secret = process.env.JWT_SECRET as string
 
         const token = jwt.sign({
             id: loginByEmail.id,
             email: loginByEmail.email,
             role: roleName
-        }, "secreto", {
+        }, secret, {
             expiresIn: "5h"
         })
 
@@ -289,7 +290,33 @@ const updateUser = async (req: Request, res: Response) => {
 const getAllUsers = async (req: Request, res: Response) => {
 
     try {
-        const users = await User.find()
+        // en la url:
+        // ?skip=3         me trae por pagina 3 usuarios
+        // &page=2         trae la pagina 2
+        // urlcompleta?skip=3&page=2 
+
+        if (typeof (req.query.skip) !== "string") {
+            return res.json({
+                success: true,
+                message: "skip it's not string."
+            })
+        }
+
+        if (typeof (req.query.page) !== "string") {
+            return res.json({
+                success: true,
+                message: "page it's not string."
+            })
+        }
+
+        const pageSize = parseInt(req.query.skip as string) || 5
+        const page: any = parseInt(req.query.page as string) || 1
+        const skip = (page - 1) * pageSize
+
+        const users = await User.find({
+            skip: skip,
+            take: pageSize
+        })
 
         if (users.length == 0) {
             return res.json({
@@ -305,9 +332,9 @@ const getAllUsers = async (req: Request, res: Response) => {
                 name: users.full_name,
                 phone_number: users.phone_number,
                 is_active: users.is_active,
-                role_id:users.is_active,
-                created_at:users.is_active,
-                updated_at:users.is_active
+                role_id: users.is_active,
+                created_at: users.is_active,
+                updated_at: users.is_active
             };
         });
 
@@ -326,4 +353,68 @@ const getAllUsers = async (req: Request, res: Response) => {
     }
 }
 
-export { register, login, profile, updateUser, getAllUsers } 
+const getAllWorkers = async (req: Request, res: Response) => {
+
+    try {
+        if (typeof (req.query.skip) !== "string") {
+            return res.json({
+                success: true,
+                message: "skip it's not string."
+            })
+        }
+
+        if (typeof (req.query.page) !== "string") {
+            return res.json({
+                success: true,
+                message: "page it's not string."
+            })
+        }
+
+        const pageSize = parseInt(req.query.skip as string) || 5
+        const page: any = parseInt(req.query.page as string) || 1
+        const skip = (page - 1) * pageSize
+
+        const profileUser = await User.find({
+            where: {
+                role_id: 2
+            },
+            skip: skip,
+            take: pageSize
+        });
+
+        if (profileUser.length == 0) {
+            return res.json({
+                success: false,
+                message: "there are not any registered worker",
+            })
+        }
+
+        const mappingUsers = profileUser.map(users => {
+            if (users.is_active == true) {
+                return {
+                    name: users.full_name,
+                    email: users.email,
+                    phone_number: users.phone_number,
+                };
+            }
+        });
+
+        return res.json({
+            success: true,
+            message: "here are all the workers",
+            data: mappingUsers
+        })
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "the workers can't be retrieved",
+            error
+        })
+    }
+}
+
+
+
+export { register, login, profile, updateUser, getAllUsers, 
+    getAllWorkers} 

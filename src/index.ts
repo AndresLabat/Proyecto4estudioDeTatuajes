@@ -1,6 +1,7 @@
 import express from "express";
 import { router as routerUsers } from "./routes/usersRoutes";
 import { router as routerAppointments } from "./routes/appointmentsRoutes";
+import 'dotenv/config'
 import { AppDataSource } from "./db";
 
 const app = express()
