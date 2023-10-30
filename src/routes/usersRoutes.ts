@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { register, login, profile, updateUser, getAllUsers, getAllWorkers} from "../controllers/usersControllers";
+import { register, login, profile, updateUser, getAllUsers, getAllWorkers, createWorker} from "../controllers/usersControllers";
 import { auth } from "../middleware/auth";
 import { isSuperAdmin } from "../middleware/isSuperAdmin";
 
@@ -11,6 +11,7 @@ router.get('/profile', auth, profile)
 router.put('/update', auth, updateUser)
 router.get('/all',auth ,isSuperAdmin ,getAllUsers)
 router.get('/allWorkers', auth, getAllWorkers)
+router.post('/worker', auth, isSuperAdmin, createWorker)
 
 
 export {router}
