@@ -10,7 +10,7 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
         const id = req.token.id
 
         const appointmentsUser = await Appointment.find({
-            where:{
+            where: {
                 client_id: id
             },
             relations: ["appointmentPortfolios"]
@@ -18,8 +18,8 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
             const { status, worker_id, client_id, appointmentPortfolios, ...rest } = obj;
-            const nameObject = obj.appointmentPortfolios.map((obj)=>obj.name)
-            
+            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
+
             const worker = await User.findOneBy({
                 id: worker_id
             });
@@ -28,8 +28,8 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
                 const full_name = worker.full_name
                 const email = worker.email;
                 const is_active = worker.is_active;
-                const name = nameObject[0]
-                return { full_name, email, name, is_active,...rest };
+                const name = nameProduct[0]
+                return { full_name, email, name, is_active, ...rest };
             }
             else {
                 return null
@@ -166,7 +166,7 @@ const createAppointment = async (req: Request, res: Response) => {
                 mensaje: "shift incorrect, you only can put morning or afternoon, try again"
             });
         }
-       
+
         if (!purchase_Name) {
             return res.json({
                 success: true,
@@ -196,9 +196,9 @@ const createAppointment = async (req: Request, res: Response) => {
         }
 
         const getPurchaseItems = await Portfolio.find()
-        const mapPortfolio = getPurchaseItems.map((obj)=>obj.name)
+        const mapPortfolio = getPurchaseItems.map((obj) => obj.name)
 
-        if(!mapPortfolio.includes(purchase_Name)){
+        if (!mapPortfolio.includes(purchase_Name)) {
             return res.json({
                 success: true,
                 message: "the name of the item purchase doesn't exist",
@@ -222,11 +222,11 @@ const createAppointment = async (req: Request, res: Response) => {
         }).save()
 
         const getPortfolio = await Portfolio.findOneBy({
-            name:purchase_Name
+            name: purchase_Name
         })
 
         const createAppointment = await Appointment_portfolio.create({
-            appointment_id:createNewAppointment.id,
+            appointment_id: createNewAppointment.id,
             portfolio_id: getPortfolio?.id
         }).save()
 
@@ -375,7 +375,7 @@ const updateAppointment = async (req: Request, res: Response) => {
                 message: "appointment updated not succesfully, incorrect id"
             })
         }
-            
+
         if (!name) {
             return res.json({
                 success: true,
@@ -405,9 +405,9 @@ const updateAppointment = async (req: Request, res: Response) => {
         }
 
         const getPurchaseItems = await Portfolio.find()
-        const mapPortfolio = getPurchaseItems.map((obj)=>obj.name)
+        const mapPortfolio = getPurchaseItems.map((obj) => obj.name)
 
-        if(!mapPortfolio.includes(name)){
+        if (!mapPortfolio.includes(name)) {
             return res.json({
                 success: true,
                 message: "the name of the item purchase doesn't exist",
@@ -518,27 +518,36 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
             worker_id: id
         })
 
-        const appointmentsUserForShows = await Promise.all(appointmentsWorker.map(async (obj) => {
-            const { status, worker_id, client_id, ...rest } = obj;
-            
-            const worker = await User.findOneBy({ 
-                id: worker_id 
-            });
+        const appointmentsWorkerForShows = await Promise.all(appointmentsWorker
+            .filter((obj) => obj.status === false)
+            .map(async (obj) => {
+                const { worker_id, client_id, ...rest } = obj;
+                const client = await User.findOneBy({
+                    id: client_id
+                });
+                if (client) {
+                    const client_name = client.full_name
+                    const client_email = client.email;
+                    const is_active = client.is_active;
+                    return { client_name, client_email, is_active, ...rest };
+                }
+                else {
+                    return null
+                }
+            })
+        );
 
-            if (worker) {
-                const email = worker.email;
-                const is_active = worker.is_active;
-                return { ...rest, email, is_active };
-            }
-            else {
-                return null
-            }
-        }));
+        if (appointmentsWorkerForShows.length == 0) {
+            return res.json({
+                success: true,
+                message: "This worker has no appointments",
+            });
+        }
 
         return res.json({
             success: true,
             message: "Here are all your appointments as employee",
-            data: appointmentsUserForShows
+            data: appointmentsWorkerForShows
         });
 
     } catch (error) {
@@ -551,17 +560,17 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
 }
 
 const getallAppointments = async (req: Request, res: Response) => {
-  
+
 
     try {
         const id = req.token.id
 
         const appointmentsUser = await Appointment.find()
- 
+
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
             const { status, worker_id, client_id, ...rest } = obj;
-            
-            const user = await User.findOneBy({ 
+
+            const user = await User.findOneBy({
                 id: client_id
             });
 
@@ -569,7 +578,7 @@ const getallAppointments = async (req: Request, res: Response) => {
                 const email = user.email;
                 const full_name = user.full_name;
                 const is_active = user.is_active;
-                return { is_active, email,full_name,...rest,  };
+                return { is_active, email, full_name, ...rest, };
             }
             else {
                 return null
@@ -594,5 +603,7 @@ const getallAppointments = async (req: Request, res: Response) => {
 const getAppointmentDetail = async (req: Request, res: Response) => {
 }
 
-export { getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment,
-    getAppointmentsByWorker, getallAppointments, getAppointmentDetail }
+export {
+    getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment,
+    getAppointmentsByWorker, getallAppointments, getAppointmentDetail
+}
