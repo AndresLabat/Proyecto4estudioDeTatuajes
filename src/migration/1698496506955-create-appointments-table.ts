@@ -20,8 +20,9 @@ export class CreateAppointmentsTable1698496506955 implements MigrationInterface 
                         isNullable: false
                     },
                     {
-                        name: "time",
-                        type: "time",
+                        name: "shift",
+                        type: "enum",
+                        enum: ["morning","afternoon"],
                         isNullable: false
                     },
                     {

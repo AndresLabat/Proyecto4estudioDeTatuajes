@@ -51,7 +51,7 @@ const createAppointment = async (req: Request, res: Response) => {
 
     try {
         const date = req.body.date
-        const time = req.body.time
+        const shift = req.body.shift
         const email = req.body.email
         const purchase_Name = req.body.name
         const id = req.token.id
@@ -142,30 +142,27 @@ const createAppointment = async (req: Request, res: Response) => {
             });
         }
 
-        if (!time) {
+        if (!shift) {
             return res.json({
                 success: true,
-                message: "you must insert a time",
+                message: "you must insert a shift",
             })
         }
 
-        if (typeof (time) !== "string") {
+        if (typeof (shift) !== "string") {
             return res.json({
                 success: true,
-                mensaje: "time incorrect, you can put only strings, try again"
+                mensaje: "shift incorrect, you can put only strings, try again"
             });
         }
 
-        const timeRegex = /^\d{2}:\d{2}:\d{2}$/;
-
-        if (!timeRegex.test(time)) {
+        if (shift !== "morning" && shift !== "afternoon") {
             return res.json({
                 success: true,
-                mensaje: "time incorrect, The time format should be HH:MM:SS, try again"
+                mensaje: "shift incorrect, you only can put morning or afternoon, try again"
             });
         }
-
-        
+       
         if (!purchase_Name) {
             return res.json({
                 success: true,
@@ -194,20 +191,28 @@ const createAppointment = async (req: Request, res: Response) => {
             });
         }
 
-        // VALIDACIONES DE FECHAS Y HORAS A HACER A TRAVES DE LA LIBRERIA 
-        // https://www.npmjs.com/package/dayjs
+        const getPurchaseItems = await Portfolio.find()
+        const mapPortfolio = getPurchaseItems.map((obj)=>obj.name)
 
+        if(!mapPortfolio.includes(purchase_Name)){
+            return res.json({
+                success: true,
+                message: "the name of the item purchase doesn't exist",
+            })
+        }
 
-        // if(createNewAppointment.date ==   && createNewAppointment.time == ){
-        //     return res.json({
-        //         success: true,
-        //         message: "sorry, you can't create a appointment with yourself"
-        //     })
-        // }
+        // VALIDACIONES DE FECHAS Y TURNOS A HACER A TRAVES DE LA LIBRERIA 
+        //
+        //
+        //
+        //
+        //
+        //
+        // VALIDACIONES DE FECHAS Y TURNOS A HACER A TRAVES DE LA LIBRERIA 
 
         const createNewAppointment = await Appointment.create({
             date,
-            time,
+            shift,
             worker_id: loginByEmail.id,
             client_id: id
         }).save()
@@ -226,7 +231,7 @@ const createAppointment = async (req: Request, res: Response) => {
             message: "appointment created succesfully",
             data: {
                 date: createNewAppointment.date,
-                time: createNewAppointment.time,
+                shift: createNewAppointment.shift,
                 email: email,
                 id: createNewAppointment.id,
                 purchase_Name: getPortfolio?.name,
@@ -249,7 +254,7 @@ const updateAppointment = async (req: Request, res: Response) => {
 
     try {
         const client_id = req.token.id
-        const { id: appointmentId, date, time, email } = req.body
+        const { id, date, shift, email, name } = req.body
 
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -294,14 +299,14 @@ const updateAppointment = async (req: Request, res: Response) => {
 
         const worker_id = findWorker_id?.id
 
-        if (!appointmentId) {
+        if (!id) {
             return res.json({
                 success: true,
                 message: "you must insert an id",
             })
         }
 
-        if (typeof (appointmentId) !== "number") {
+        if (typeof (id) !== "number") {
             return res.json({
                 success: true,
                 mensaje: "id incorrect, you can put only numbers, try again"
@@ -331,26 +336,24 @@ const updateAppointment = async (req: Request, res: Response) => {
             });
         }
 
-        if (!time) {
+        if (!shift) {
             return res.json({
                 success: true,
-                message: "you must insert a time",
+                message: "you must insert a shift",
             })
         }
 
-        if (typeof (time) !== "string") {
+        if (typeof (shift) !== "string") {
             return res.json({
                 success: true,
-                mensaje: "time incorrect, you can put only strings, try again"
+                mensaje: "shift incorrect, you can put only strings, try again"
             });
         }
 
-        const timeRegex = /^\d{2}:\d{2}:\d{2}$/;
-
-        if (!timeRegex.test(time)) {
+        if (shift !== "morning" && shift !== "afternoon") {
             return res.json({
                 success: true,
-                mensaje: "time incorrect, The time format should be HH:MM:SS, try again"
+                mensaje: "shift incorrect, you only can put morning or afternoon, try again"
             });
         }
 
@@ -362,10 +365,48 @@ const updateAppointment = async (req: Request, res: Response) => {
             object.id
         )
 
-        if (!appointmentsId.includes(appointmentId)) {
+        if (!appointmentsId.includes(id)) {
             return res.json({
                 success: true,
                 message: "appointment updated not succesfully, incorrect id"
+            })
+        }
+            
+        if (!name) {
+            return res.json({
+                success: true,
+                message: "you must insert an name",
+            })
+        }
+
+        if (typeof (name) !== "string") {
+            return res.json({
+                success: true,
+                mensaje: 'name incorrect, you can put only strings, try again'
+            });
+        }
+
+        if (name.length == 0) {
+            return res.json({
+                success: true,
+                mensaje: 'name too short, try to insert a larger name, max 100 characters'
+            });
+        }
+
+        if (name.length > 100) {
+            return res.json({
+                success: true,
+                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
+            });
+        }
+
+        const getPurchaseItems = await Portfolio.find()
+        const mapPortfolio = getPurchaseItems.map((obj)=>obj.name)
+
+        if(!mapPortfolio.includes(name)){
+            return res.json({
+                success: true,
+                message: "the name of the item purchase doesn't exist",
             })
         }
 
@@ -381,15 +422,15 @@ const updateAppointment = async (req: Request, res: Response) => {
         // }
 
         await Appointment.update({
-            id: appointmentId
+            id: id
         }, {
             date,
-            time,
+            shift,
             worker_id
         })
 
         const dataAppointmentUpdated = await Appointment.findOneBy({
-            id: appointmentId
+            id: id
         })
 
         return res.json({
@@ -397,9 +438,9 @@ const updateAppointment = async (req: Request, res: Response) => {
             message: "appointment created succesfully",
             data: {
                 date,
-                time,
+                shift,
                 email,
-                id: appointmentId,
+                id: id,
                 created_at: dataAppointmentUpdated?.created_at,
                 updated_at: dataAppointmentUpdated?.updated_at
             }
