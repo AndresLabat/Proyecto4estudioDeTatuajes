@@ -453,5 +453,49 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
     }
 }
 
+// obtener todas las citas como super admin 
+const getallAppointments = async (req: Request, res: Response) => {
+  
+
+    try {
+        const id = req.token.id
+
+        const appointmentsUser = await Appointment.find()
+ 
+        const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
+            const { status, worker_id, client_id, ...rest } = obj;
+            
+            const user = await User.findOneBy({ 
+                id: client_id
+            });
+
+            if (user) {
+                const email = user.email;
+                const full_name = user.full_name;
+                const is_active = user.is_active;
+                return { is_active, email,full_name,...rest,  };
+            }
+            else {
+                return null
+            }
+        }));
+
+        return res.json({
+            success: true,
+            message: "Here are all your appointments",
+            data: appointmentsUserForShows
+        });
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "appointments can't be getted, try again",
+            error
+        })
+    }
+}
+
+
+
 export { getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment,
-    getAppointmentsByWorker }
+    getAppointmentsByWorker, getallAppointments }
