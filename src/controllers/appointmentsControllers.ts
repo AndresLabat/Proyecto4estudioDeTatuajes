@@ -412,4 +412,46 @@ const deleteAppointment = async (req: Request, res: Response) => {
     }
 }
 
-export { getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment }
+const getAppointmentsByWorker = async (req: Request, res: Response) => {
+
+    try {
+        const id = req.token.id
+
+        const appointmentsWorker = await Appointment.findBy({
+            worker_id: id
+        })
+
+        const appointmentsUserForShows = await Promise.all(appointmentsWorker.map(async (obj) => {
+            const { status, worker_id, client_id, ...rest } = obj;
+            
+            const worker = await User.findOneBy({ 
+                id: worker_id 
+            });
+
+            if (worker) {
+                const email = worker.email;
+                const is_active = worker.is_active;
+                return { ...rest, email, is_active };
+            }
+            else {
+                return null
+            }
+        }));
+
+        return res.json({
+            success: true,
+            message: "Here are all your appointments as employee",
+            data: appointmentsUserForShows
+        });
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "appointments can't be getted, try again",
+            error
+        })
+    }
+}
+
+export { getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment,
+    getAppointmentsByWorker }
