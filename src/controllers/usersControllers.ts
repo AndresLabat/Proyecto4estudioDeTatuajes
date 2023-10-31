@@ -566,7 +566,53 @@ const deleteUserBySuperAdmin = async (req: Request, res: Response) => {
 
 const changeRole = async (req: Request, res: Response) => {
 
-    
+    try {
+        const role_id = req.body.role_id
+        const user_id = req.body.id
+
+        if (!role_id){
+            return res.json({
+                success: true,
+                message: "role_id incorrect."
+            })
+        }
+
+        if (role_id>3 || role_id<1){
+            return res.json({
+                success: true,
+                message: "role_id incorrect."
+            })
+        }
+
+        if (!user_id){
+            return res.json({
+                success: true,
+                message: "user_id incorrect."
+            })
+        }
+
+        const updateRole = await User.update({
+            id:user_id
+        },{
+            role_id:role_id
+        })
+
+        return res.json({
+            success: true,
+            message: "role of the user is updated succesfully",
+            data: {
+                id:user_id,
+                role_id
+            }
+        })
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "Unable to update the user, please try again.",
+            error
+        })
+    }
 }
 
 export { register, login, profile, updateUser, getAllUsers, 
