@@ -212,15 +212,6 @@ const createAppointment = async (req: Request, res: Response) => {
             })
         }
 
-        // VALIDACIONES DE FECHAS Y TURNOS A HACER A TRAVES DE LA LIBRERIA 
-        //
-        //
-        //
-        //
-        //
-        //
-        // VALIDACIONES DE FECHAS Y TURNOS A HACER A TRAVES DE LA LIBRERIA 
-
         const createNewAppointment = await Appointment.create({
             date,
             shift,
@@ -232,7 +223,7 @@ const createAppointment = async (req: Request, res: Response) => {
             name: purchase_Name
         })
 
-        const createAppointment = await Appointment_portfolio.create({
+        await Appointment_portfolio.create({
             appointment_id: createNewAppointment.id,
             portfolio_id: getPortfolio?.id
         }).save()
@@ -246,6 +237,7 @@ const createAppointment = async (req: Request, res: Response) => {
                 email: email,
                 id: createNewAppointment.id,
                 purchase_Name: getPortfolio?.name,
+                category: getPortfolio?.category,
                 price: getPortfolio?.price,
                 created_at: createNewAppointment.created_at,
                 updated_at: createNewAppointment.updated_at
@@ -420,27 +412,30 @@ const updateAppointment = async (req: Request, res: Response) => {
             })
         }
 
-        // VALIDACIONES DE FECHAS Y HORAS A HACER A TRAVES DE LA LIBRERIA 
-        // https://www.npmjs.com/package/dayjs
-
-
-        // if(createNewAppointment.date ==   && createNewAppointment.time == ){
-        //     return res.json({
-        //         success: true,
-        //         message: "sorry, you can't create a appointment with yourself"
-        //     })
-        // }
+        const nameProduct = await Portfolio.findOneBy({
+            name
+        })
 
         await Appointment.update({
-            id: id
+            id
         }, {
             date,
             shift,
             worker_id
         })
 
+        await Appointment_portfolio.update({
+            appointment_id:id
+        },{ 
+            portfolio_id:nameProduct?.id
+        })
+
         const dataAppointmentUpdated = await Appointment.findOneBy({
             id: id
+        })
+
+        const getPortfolio = await Portfolio.findOneBy({
+            name
         })
 
         return res.json({
@@ -451,6 +446,8 @@ const updateAppointment = async (req: Request, res: Response) => {
                 shift,
                 email,
                 id: id,
+                name,
+                category:getPortfolio?.category,
                 created_at: dataAppointmentUpdated?.created_at,
                 updated_at: dataAppointmentUpdated?.updated_at
             }
