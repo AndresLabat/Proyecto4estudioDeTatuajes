@@ -9,16 +9,37 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
     try {
         const id = req.token.id
 
+        if (typeof (req.query.skip) !== "string") {
+            return res.json({
+                success: true,
+                message: "skip it's not string."
+            })
+        }
+
+        if (typeof (req.query.page) !== "string") {
+            return res.json({
+                success: true,
+                message: "page it's not string."
+            })
+        }
+
+        const pageSize = parseInt(req.query.skip as string) || 5
+        const page: any = parseInt(req.query.page as string) || 1
+        const skip = (page - 1) * pageSize
+
         const appointmentsUser = await Appointment.find({
             where: {
                 client_id: id
             },
-            relations: ["appointmentPortfolios"]
+            relations: ["appointmentPortfolios"],
+            skip: skip,
+            take: pageSize
         })
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
             const { status, worker_id, client_id, appointmentPortfolios, ...rest } = obj;
-            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
+            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
+            const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
 
             const worker = await User.findOneBy({
                 id: worker_id
@@ -29,7 +50,8 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
                 const email = worker.email;
                 const is_active = worker.is_active;
                 const name = nameProduct[0]
-                return { full_name, email, name, is_active, ...rest };
+                const category = categoryProduct[0]
+                return { name, category, email, full_name, is_active, ...rest };
             }
             else {
                 return null
@@ -425,9 +447,9 @@ const updateAppointment = async (req: Request, res: Response) => {
         })
 
         await Appointment_portfolio.update({
-            appointment_id:id
-        },{ 
-            portfolio_id:nameProduct?.id
+            appointment_id: id
+        }, {
+            portfolio_id: nameProduct?.id
         })
 
         const dataAppointmentUpdated = await Appointment.findOneBy({
@@ -447,7 +469,7 @@ const updateAppointment = async (req: Request, res: Response) => {
                 email,
                 id: id,
                 name,
-                category:getPortfolio?.category,
+                category: getPortfolio?.category,
                 created_at: dataAppointmentUpdated?.created_at,
                 updated_at: dataAppointmentUpdated?.updated_at
             }
