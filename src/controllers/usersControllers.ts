@@ -564,5 +564,10 @@ const deleteUserBySuperAdmin = async (req: Request, res: Response) => {
     }
 }
 
+const changeRole = async (req: Request, res: Response) => {
+
+    
+}
+
 export { register, login, profile, updateUser, getAllUsers, 
-    getAllWorkers, createWorker, deleteUserBySuperAdmin } 
+    getAllWorkers, createWorker, deleteUserBySuperAdmin, changeRole } 

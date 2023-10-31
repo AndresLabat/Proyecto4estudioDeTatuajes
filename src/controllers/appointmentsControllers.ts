@@ -36,6 +36,13 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
             }
         }));
 
+        if (appointmentsUserForShows.length == 0) {
+            return res.json({
+                success: true,
+                message: "This user has not appointments",
+            });
+        }
+
         return res.json({
             success: true,
             message: "Here are all your appointments",
@@ -259,7 +266,6 @@ const updateAppointment = async (req: Request, res: Response) => {
     try {
         const client_id = req.token.id
         const { id, date, shift, email, name } = req.body
-
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
         if (!email) {
@@ -514,8 +520,33 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
     try {
         const id = req.token.id
 
-        const appointmentsWorker = await Appointment.findBy({
-            worker_id: id
+        // en la url:
+        // ?skip=3         me trae por pagina 3 usuarios
+        // &page=2         trae la pagina 2
+        // urlcompleta?skip=3&page=2 
+
+        if (typeof (req.query.skip) !== "string") {
+            return res.json({
+                success: true,
+                message: "skip it's not string."
+            })
+        }
+
+        if (typeof (req.query.page) !== "string") {
+            return res.json({
+                success: true,
+                message: "page it's not string."
+            })
+        }
+
+        const pageSize = parseInt(req.query.skip as string) || 5
+        const page: any = parseInt(req.query.page as string) || 1
+        const skip = (page - 1) * pageSize
+
+        const appointmentsWorker = await Appointment.find({
+            where: { worker_id: id },
+            skip: skip,
+            take: pageSize
         })
 
         const appointmentsWorkerForShows = await Promise.all(appointmentsWorker
@@ -546,14 +577,14 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
 
         return res.json({
             success: true,
-            message: "Here are all your appointments as employee",
+            message: "Here are all your appointments as worker",
             data: appointmentsWorkerForShows
         });
 
     } catch (error) {
         return res.json({
             success: false,
-            message: "appointments can't be getted, try again",
+            message: "worker appointments can't be getted, try again",
             error
         })
     }
@@ -561,33 +592,71 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
 
 const getallAppointments = async (req: Request, res: Response) => {
 
-
     try {
-        const id = req.token.id
+        // en la url:
+        // ?skip=3         me trae por pagina 3 usuarios
+        // &page=2         trae la pagina 2
+        // urlcompleta?skip=3&page=2 
 
-        const appointmentsUser = await Appointment.find()
+        if (typeof (req.query.skip) !== "string") {
+            return res.json({
+                success: true,
+                message: "skip it's not string."
+            })
+        }
+
+        if (typeof (req.query.page) !== "string") {
+            return res.json({
+                success: true,
+                message: "page it's not string."
+            })
+        }
+
+        const pageSize = parseInt(req.query.skip as string) || 5
+        const page: any = parseInt(req.query.page as string) || 1
+        const skip = (page - 1) * pageSize
+
+        const appointmentsUser = await Appointment.find({
+            skip: skip,
+            take: pageSize
+        })
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
-            const { status, worker_id, client_id, ...rest } = obj;
+            const { worker_id, client_id, ...rest } = obj;
 
-            const user = await User.findOneBy({
+            const clientInfo = await User.findOneBy({
                 id: client_id
             });
 
-            if (user) {
-                const email = user.email;
-                const full_name = user.full_name;
-                const is_active = user.is_active;
-                return { is_active, email, full_name, ...rest, };
+            const workerInfo = await User.findOneBy({
+                id: worker_id
+            });
+
+            if (clientInfo && workerInfo) {
+                const client_email = clientInfo.email;
+                const client_name = clientInfo.full_name;
+                const client_is_active = clientInfo.is_active;
+                const worker_email = workerInfo.email;
+                const worker_name = workerInfo.full_name;
+                const worker_is_active = workerInfo.is_active;
+
+                return { ...rest, client_is_active, client_email, client_name, worker_email, worker_name, worker_is_active };
             }
             else {
                 return null
             }
         }));
 
+        if (appointmentsUserForShows.length == 0) {
+            return res.json({
+                success: true,
+                message: "This bussiness has no appointments",
+            });
+        }
+
         return res.json({
             success: true,
-            message: "Here are all your appointments",
+            message: "Here are all the appointments",
             data: appointmentsUserForShows
         });
 
@@ -601,6 +670,67 @@ const getallAppointments = async (req: Request, res: Response) => {
 }
 
 const getAppointmentDetail = async (req: Request, res: Response) => {
+
+    try {
+        const appointment_id = req.body.id
+        const id = req.token.id
+
+        const appointmentsUser = await Appointment.find({
+            where: {
+                client_id: id
+            },
+            relations: ["appointmentPortfolios"]
+        })
+
+        const appointmentsUserForShow = await Promise.all(appointmentsUser.map(async (obj) => {
+            const { status, worker_id, client_id, appointmentPortfolios, ...rest } = obj;
+            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
+
+            const worker = await User.findOneBy({
+                id: worker_id
+            });
+
+            if (worker) {
+                const full_name = worker.full_name
+                const email = worker.email;
+                const is_active = worker.is_active;
+                const name = nameProduct[0]
+                return { full_name, email, name, is_active, ...rest };
+            }
+            else {
+                return null
+            }
+        }));
+
+        if (appointmentsUserForShow.length == 0) {
+            return res.json({
+                success: true,
+                message: "This user has not appointments",
+            });
+        }
+
+        const appointmentDetail = appointmentsUserForShow.find(obj => obj?.id === appointment_id);
+
+        if (appointmentDetail == null) {
+            return res.json({
+                success: true,
+                message: "appointment id incorrect, try again",
+            });
+        }
+
+        return res.json({
+            success: true,
+            message: "Here are all your appointments",
+            data: appointmentDetail
+        });
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "appointments can't be getted, try again",
+            error
+        })
+    }
 }
 
 export {
