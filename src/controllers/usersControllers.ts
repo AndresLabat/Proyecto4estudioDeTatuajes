@@ -591,6 +591,19 @@ const changeRole = async (req: Request, res: Response) => {
             })
         }
 
+        const usersId = await User.find()
+
+        const mapUsersId = usersId.map((obj)=>{
+            obj.id
+        })
+
+        if(!mapUsersId.includes(user_id)){
+            return res.json({
+                success: true,
+                message: "user_id not exist."
+            })
+        }
+
         const updateRole = await User.update({
             id:user_id
         },{
