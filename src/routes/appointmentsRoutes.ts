@@ -14,5 +14,6 @@ router.delete('/delete',auth, deleteAppointment)
 router.get('/byWorker',auth, isAdmin, getAppointmentsByWorker)
 router.get('/bySuperAdmin',auth, isSuperAdmin, getallAppointments)
 router.get('/detail',auth, getAppointmentDetail)
+// router.post('/validation', auth,)
 
 export {router}

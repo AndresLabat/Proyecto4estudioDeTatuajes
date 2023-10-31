@@ -539,11 +539,6 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
     try {
         const id = req.token.id
 
-        // en la url:
-        // ?skip=3         me trae por pagina 3 usuarios
-        // &page=2         trae la pagina 2
-        // urlcompleta?skip=3&page=2 
-
         if (typeof (req.query.skip) !== "string") {
             return res.json({
                 success: true,
@@ -564,6 +559,7 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
 
         const appointmentsWorker = await Appointment.find({
             where: { worker_id: id },
+            relations: ["appointmentPortfolios"],
             skip: skip,
             take: pageSize
         })
@@ -571,15 +567,20 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
         const appointmentsWorkerForShows = await Promise.all(appointmentsWorker
             .filter((obj) => obj.status === false)
             .map(async (obj) => {
-                const { worker_id, client_id, ...rest } = obj;
+                const { worker_id, client_id, appointmentPortfolios, ...rest } = obj;
+                const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
+                const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
+
                 const client = await User.findOneBy({
                     id: client_id
                 });
                 if (client) {
+                    const name = nameProduct[0]
+                    const category = categoryProduct[0]
                     const client_name = client.full_name
                     const client_email = client.email;
                     const is_active = client.is_active;
-                    return { client_name, client_email, is_active, ...rest };
+                    return { name, category, client_name, client_email, is_active, ...rest };
                 }
                 else {
                     return null
@@ -612,11 +613,6 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
 const getallAppointments = async (req: Request, res: Response) => {
 
     try {
-        // en la url:
-        // ?skip=3         me trae por pagina 3 usuarios
-        // &page=2         trae la pagina 2
-        // urlcompleta?skip=3&page=2 
-
         if (typeof (req.query.skip) !== "string") {
             return res.json({
                 success: true,
@@ -636,12 +632,15 @@ const getallAppointments = async (req: Request, res: Response) => {
         const skip = (page - 1) * pageSize
 
         const appointmentsUser = await Appointment.find({
+            relations: ["appointmentPortfolios"],
             skip: skip,
             take: pageSize
         })
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
-            const { worker_id, client_id, ...rest } = obj;
+            const { worker_id, client_id, appointmentPortfolios, ...rest } = obj;
+            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
+            const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
 
             const clientInfo = await User.findOneBy({
                 id: client_id
@@ -658,8 +657,13 @@ const getallAppointments = async (req: Request, res: Response) => {
                 const worker_email = workerInfo.email;
                 const worker_name = workerInfo.full_name;
                 const worker_is_active = workerInfo.is_active;
+                const name = nameProduct[0]
+                const category = categoryProduct[0]
 
-                return { ...rest, client_is_active, client_email, client_name, worker_email, worker_name, worker_is_active };
+                return {
+                    ...rest, name, category, client_is_active, client_name, client_email,
+                    worker_name, worker_email, worker_is_active
+                };
             }
             else {
                 return null
