@@ -56,5 +56,9 @@ Migraciones (tener en cuenta):
 <!-- 3. **Eliminar usuario del sistema (super admin)** - **`/admin/users/{userID}/delete`** - (DELETE) -->
 <!-- 4. **Ver una cita en detalle** - **`/appointments/{appointmentID}`** - (GET) -->
 <!-- 5. **Otorgar roles a los usuarios del sistema (super admin)** - **`/admin/users/{userID}/assign-role`** - (PUT) -->
-6. **Validar la fecha de la cita** - **`/appointments/{appointmentID}/validate-date`** - (PUT)
+<!-- 6. **Validar la fecha de la cita** - **`/appointments/{appointmentID}/validate-date`** - (PUT) -->
 <!-- 7. **Añadir tipos de intervención (tattoo / piercing) a las citas** - **`/appointments/{appointmentID}/add-intervention`** - (PUT) -->
+
+meter validaciones a appointmentValidation
+Create y update appointment validar si la fecha y el turno estan libres
+

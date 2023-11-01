@@ -3,6 +3,7 @@ import { Appointment } from "../models/Appointment"
 import { User } from "../models/User"
 import { Portfolio } from "../models/Portfolio"
 import { Appointment_portfolio } from "../models/Appointment_portfolio"
+import { validateDate, validateEmail, validateShift} from "../validations/validations"
 
 const getAppointmentsUser = async (req: Request, res: Response) => {
 
@@ -250,15 +251,20 @@ const createAppointment = async (req: Request, res: Response) => {
             portfolio_id: getPortfolio?.id
         }).save()
 
+        const workerInfo = await User.findOneBy({
+            email
+        })
+
         return res.json({
             success: true,
             message: "appointment created succesfully",
             data: {
                 date: createNewAppointment.date,
                 shift: createNewAppointment.shift,
+                workerName: workerInfo?.full_name,
                 email: email,
                 id: createNewAppointment.id,
-                purchase_Name: getPortfolio?.name,
+                purchaseName: getPortfolio?.name,
                 category: getPortfolio?.category,
                 price: getPortfolio?.price,
                 created_at: createNewAppointment.created_at,
@@ -460,15 +466,20 @@ const updateAppointment = async (req: Request, res: Response) => {
             name
         })
 
+        const workerInfo = await User.findOneBy({
+            email
+        })
+
         return res.json({
             success: true,
             message: "appointment created succesfully",
             data: {
                 date,
                 shift,
+                workerName: workerInfo?.full_name,
                 email,
                 id: id,
-                name,
+                purchaseName: name,
                 category: getPortfolio?.category,
                 created_at: dataAppointmentUpdated?.created_at,
                 updated_at: dataAppointmentUpdated?.updated_at
@@ -695,7 +706,7 @@ const getallAppointments = async (req: Request, res: Response) => {
 const getAppointmentDetail = async (req: Request, res: Response) => {
 
     try {
-        const appointment_id = req.body.id
+        const appointmentId = req.body.id
         const id = req.token.id
 
         const appointmentsUser = await Appointment.find({
@@ -732,7 +743,7 @@ const getAppointmentDetail = async (req: Request, res: Response) => {
             });
         }
 
-        const appointmentDetail = appointmentsUserForShow.find(obj => obj?.id === appointment_id);
+        const appointmentDetail = appointmentsUserForShow.find(obj => obj?.id === appointmentId);
 
         if (appointmentDetail == null) {
             return res.json({
@@ -756,7 +767,71 @@ const getAppointmentDetail = async (req: Request, res: Response) => {
     }
 }
 
+const appointmentValidation = async (req: Request, res: Response) => {
+
+    try {
+        const emailWorker = req.body.email
+        const date = req.body.date
+        const shift = req.body.shift
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const day = today.getDate();
+
+        const todayFormatDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+        if(todayFormatDate > date){
+            return res.json({
+                success: true,
+                message: "This appointment is dated before today, try again"
+            });
+        }
+
+        if (validateEmail(emailWorker)) {
+            return res.json({ success: true, message: validateEmail(emailWorker) });
+        }
+
+        if (validateDate(date)) {
+            return res.json({ success: true, message: validateDate(date) });
+        }
+
+        if (validateShift(shift)) {
+            return res.json({ success: true, message: validateShift(shift) });
+        }
+
+        const workerInfo = await User.findOneBy({
+            email: emailWorker
+        })
+
+        const allAppointments = await Appointment.findBy({
+            date,
+            shift,
+            worker_id: workerInfo?.id
+        })
+
+        if (allAppointments.length !== 0) {
+            return res.json({
+                success: true,
+                message: "The appointment is not available, try a different date or shift"
+            });
+        }
+      
+        return res.json({
+            success: true,
+            message: "The appointment is available"
+        });
+
+    } catch (error) {
+        return res.json({
+            success: false,
+            message: "Appointments cannot be retrieved, please try again.",
+            error
+        })
+    }
+}
+
 export {
     getAppointmentsUser, createAppointment, updateAppointment, deleteAppointment,
-    getAppointmentsByWorker, getallAppointments, getAppointmentDetail
+    getAppointmentsByWorker, getallAppointments, getAppointmentDetail, appointmentValidation
 }
