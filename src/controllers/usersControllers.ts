@@ -7,7 +7,7 @@ import { validateEmail, validateNumber, validatePassword, validateString } from 
 const register = async (req: Request, res: Response) => {
 
     try {
-        const {full_name, email, password, phone_number} = req.body
+        const { full_name, email, password, phone_number } = req.body
 
         if (validateString(full_name, 50)) {
             return res.json({ success: true, message: validateString(full_name, 50) });
@@ -56,7 +56,7 @@ const register = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
 
     try {
-        const {email, password} = req.body;
+        const { email, password } = req.body;
 
         const loginByEmail = await User.findOne({
             where: { email },
@@ -95,7 +95,6 @@ const login = async (req: Request, res: Response) => {
             expiresIn: "5h"
         })
 
-
         return res.json({
             success: true,
             message: "user logged succesfully",
@@ -115,6 +114,7 @@ const profile = async (req: Request, res: Response) => {
 
     try {
         const email = req.token.email
+
         const profileUser = await User.findOneBy({
             email
         })
@@ -141,51 +141,19 @@ const profile = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
 
     try {
-        const {full_name, password, phone_number} = req.body
+        const { full_name, password, phone_number } = req.body
         const id = req.token.id
 
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{4,12}$/;
-
-        if (typeof (full_name) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: 'Name is incorrect; only strings are allowed. Please try again.'
-            });
+        if (validateString(full_name, 50)) {
+            return res.json({ success: true, message: validateString(full_name, 50) });
         }
 
-        if (full_name.length > 50) {
-            return res.json({
-                success: true,
-                mensaje: 'Name is too long. Please insert a shorter name (maximum 50 characters).'
-            });
+        if (validatePassword(password)) {
+            return res.json({ success: true, message: validatePassword(password) });
         }
 
-        if (typeof (password) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: 'Password is incorrect; only strings are allowed. Please try again'
-            });
-        }
-
-        if (password.length > 100) {
-            return res.json({
-                success: true,
-                mensaje: 'Password is too long. Please insert a shorter password (maximum 100 characters).'
-            });
-        }
-
-        if (!passwordRegex.test(password)) {
-            return res.json({
-                success: true,
-                mensaje: 'Password is incorrect. Please try again'
-            });
-        }
-
-        if (typeof (phone_number) !== "number") {
-            return res.json({
-                success: true,
-                mensaje: 'Phone number is incorrect; only numbers are allowed. Please try again'
-            });
+        if (validateNumber(phone_number, 12)) {
+            return res.json({ success: true, message: validateNumber(phone_number, 12) });
         }
 
         const encrytedPassword = await bcrypt.hash(password, 10)
@@ -250,7 +218,7 @@ const getAllUsers = async (req: Request, res: Response) => {
         }
 
         const transformedUsers = users.map((user) => {
-            const {password, ...rest} = user
+            const { password, ...rest } = user
             return { ...rest };
         });
 
@@ -333,7 +301,7 @@ const getAllWorkers = async (req: Request, res: Response) => {
 const createWorker = async (req: Request, res: Response) => {
 
     try {
-        const {full_name, email, password, phone_number } = req.body;
+        const { full_name, email, password, phone_number } = req.body;
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{4,12}$/;
 
@@ -476,23 +444,23 @@ const deleteUserBySuperAdmin = async (req: Request, res: Response) => {
 const changeRole = async (req: Request, res: Response) => {
 
     try {
-        const{role_id, user_id} = req.body
+        const { role_id, user_id } = req.body
 
-        if (!role_id){
+        if (!role_id) {
             return res.json({
                 success: true,
                 message: "role_id incorrect."
             })
         }
 
-        if (role_id>3 || role_id<1){
+        if (role_id > 3 || role_id < 1) {
             return res.json({
                 success: true,
                 message: "role_id incorrect."
             })
         }
 
-        if (!user_id){
+        if (!user_id) {
             return res.json({
                 success: true,
                 message: "user_id incorrect."
@@ -501,11 +469,11 @@ const changeRole = async (req: Request, res: Response) => {
 
         const usersId = await User.find()
 
-        const mapUsersId = usersId.map((obj)=>{
+        const mapUsersId = usersId.map((obj) => {
             obj.id
         })
 
-        if(!mapUsersId.includes(user_id)){
+        if (!mapUsersId.includes(user_id)) {
             return res.json({
                 success: true,
                 message: "user_id not exist."
@@ -513,8 +481,8 @@ const changeRole = async (req: Request, res: Response) => {
         }
 
         const updateRole = await User.update({
-            id:user_id
-        },{
+            id: user_id
+        }, {
             role_id
         })
 
@@ -522,7 +490,7 @@ const changeRole = async (req: Request, res: Response) => {
             success: true,
             message: "role of the user is updated succesfully",
             data: {
-                id:user_id,
+                id: user_id,
                 role_id
             }
         })
@@ -536,5 +504,7 @@ const changeRole = async (req: Request, res: Response) => {
     }
 }
 
-export { register, login, profile, updateUser, getAllUsers, 
-    getAllWorkers, createWorker, deleteUserBySuperAdmin, changeRole } 
+export {
+    register, login, profile, updateUser, getAllUsers,
+    getAllWorkers, createWorker, deleteUserBySuperAdmin, changeRole
+} 
