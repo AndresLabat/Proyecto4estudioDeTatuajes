@@ -302,76 +302,21 @@ const createWorker = async (req: Request, res: Response) => {
 
     try {
         const { full_name, email, password, phone_number } = req.body;
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{4,12}$/;
 
-        if (typeof (full_name) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: 'name incorrect, you can put only strings, try again'
-            });
+        if (validateString(full_name, 50)) {
+            return res.json({ success: true, message: validateString(full_name, 50) });
         }
 
-        if (full_name.length < 1) {
-            return res.json({
-                success: true,
-                mensaje: 'name too long, try to insert a shorter name, max 50 characters'
-            });
-        }
-        if (full_name.length > 50) {
-            return res.json({
-                success: true,
-                mensaje: 'name too long, try to insert a shorter name, max 50 characters'
-            });
+        if (validateEmail(email)) {
+            return res.json({ success: true, message: validateEmail(email) });
         }
 
-        if (typeof (email) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: 'email incorrect, you can put only strings, try again'
-            });
+        if (validatePassword(password)) {
+            return res.json({ success: true, message: validatePassword(password) });
         }
 
-        if (email.length > 100) {
-            return res.json({
-                success: true,
-                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
-            });
-        }
-
-        if (!emailRegex.test(email)) {
-            return res.json({
-                success: true,
-                mensaje: 'email incorrect, try again'
-            });
-        }
-
-        if (typeof (password) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: 'password incorrect, you can put only strings, try again'
-            });
-        }
-
-        if (password.length > 100) {
-            return res.json({
-                success: true,
-                mensaje: 'password too long, try to insert a shorter name, max 100 characters'
-            });
-        }
-
-        if (!passwordRegex.test(password)) {
-            return res.json({
-                success: true,
-                mensaje: 'password incorrect, try again'
-            });
-        }
-
-        if (typeof (phone_number) !== "number") {
-            return res.json({
-                success: true,
-                mensaje: 'phone_number incorrect, you can put only numbers, try again'
-            });
+        if (validateNumber(phone_number, 12)) {
+            return res.json({ success: true, message: validateNumber(phone_number, 12) });
         }
 
         const encrytedPassword = await bcrypt.hash(password, 10)
@@ -407,24 +352,14 @@ const createWorker = async (req: Request, res: Response) => {
 const deleteUserBySuperAdmin = async (req: Request, res: Response) => {
 
     try {
-        const deleteById = req.body.id
+        const {id} = req.body
 
-        if (!deleteById) {
-            return res.json({
-                success: true,
-                message: "you must insert one id",
-            })
-        }
-
-        if (typeof (deleteById) !== "number") {
-            return res.json({
-                success: true,
-                mensaje: "id incorrect, you can put only numbers, try again"
-            });
+        if (validateNumber(id, 7)) {
+            return res.json({ success: true, message: validateNumber(id, 7) });
         }
 
         await User.delete({
-            id: deleteById
+            id
         })
 
         return res.json({
@@ -446,11 +381,8 @@ const changeRole = async (req: Request, res: Response) => {
     try {
         const { role_id, user_id } = req.body
 
-        if (!role_id) {
-            return res.json({
-                success: true,
-                message: "role_id incorrect."
-            })
+        if (validateNumber(role_id, 2)) {
+            return res.json({ success: true, message: validateNumber(role_id, 2) });
         }
 
         if (role_id > 3 || role_id < 1) {
@@ -460,11 +392,8 @@ const changeRole = async (req: Request, res: Response) => {
             })
         }
 
-        if (!user_id) {
-            return res.json({
-                success: true,
-                message: "user_id incorrect."
-            })
+        if (validateNumber(user_id, 7)) {
+            return res.json({ success: true, message: validateNumber(user_id, 7) });
         }
 
         const usersId = await User.find()
@@ -480,7 +409,7 @@ const changeRole = async (req: Request, res: Response) => {
             })
         }
 
-        const updateRole = await User.update({
+        await User.update({
             id: user_id
         }, {
             role_id
