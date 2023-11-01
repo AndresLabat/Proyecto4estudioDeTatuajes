@@ -59,6 +59,6 @@ Migraciones (tener en cuenta):
 <!-- 6. **Validar la fecha de la cita** - **`/appointments/{appointmentID}/validate-date`** - (PUT) -->
 <!-- 7. **Añadir tipos de intervención (tattoo / piercing) a las citas** - **`/appointments/{appointmentID}/add-intervention`** - (PUT) -->
 
-meter validaciones a appointmentValidation
+comprobar en appointmentValidation que el email existe
 Create y update appointment validar si la fecha y el turno estan libres
 

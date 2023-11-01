@@ -1,6 +1,3 @@
-import { Appointment } from "../models/Appointment";
-import { User } from "../models/User";
-
 const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -45,29 +42,77 @@ const validateShift = (shift: string) => {
         return "shift incorrect, you can put only strings, try again"
     };
 
-
     if (shift !== "morning" && shift !== "afternoon") {
         return "shift incorrect, you only can put morning or afternoon, try again"
     };
-
 };
 
-const validateNamePurchase = (purchase: string) => {
-    if (!purchase) {
-        return "you must insert an name"
+const validateString = (string: string, lenght: number) => {
+    if (!string) {
+        return `you must insert ${string}`
     }
 
-    if (typeof (purchase) !== "string") {
-        return 'name incorrect, you can put only strings, try again'
+    if (typeof(string) !== "string") {
+        return `you must insert a string`
     }
 
-    if (purchase.length == 0) {
-        return 'name too short, try to insert a larger name, max 100 characters'
+    if (string.length == 0) {
+        return `${string} too short, try to insert a larger one, max ${lenght} characters`
     };
 
-    if (purchase.length > 100) {
-        return 'name too long, try to insert a shorter name, max 100 characters'
+    if (string.length > lenght) {
+        return `${string} too long, try to insert a shorter one, max ${lenght} characters`
     }
 };
 
-export { validateDate, validateNamePurchase, validateShift, validateEmail }
+const validateNumber = (number: number, lenght: number) => {
+    if (!number) {
+        return `you must insert a number`
+    }
+
+    if (typeof(number) !== "number") {
+        return `you must insert a number`
+    }
+
+    const stringNumber = number.toString()
+    if(stringNumber.length > lenght){
+        return `number too long, try to insert a shorter one, max ${lenght} characters`
+    }
+};
+
+const validatePassword = (password: string) => {
+    
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{4,12}$/;
+
+    if (!password) {
+        return {
+            success: true,
+            mensaje: 'you must insert a password'
+        };
+    }
+
+    if (typeof (password) !== "string") {
+        return {
+            success: true,
+            mensaje: 'password incorrect, you can put only strings, try again'
+        };
+    }
+
+    if (password.length > 100) {
+        return {
+            success: true,
+            mensaje: 'password too long, try to insert a shorter name, max 100 characters'
+        };
+    }
+
+    if (!passwordRegex.test(password)) {
+        return {
+            success: true,
+            mensaje: 'password incorrect, try again'
+        };
+    }
+};
+
+
+
+export { validateDate, validateString, validateShift, validateEmail, validateNumber, validatePassword }
