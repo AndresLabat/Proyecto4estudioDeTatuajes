@@ -69,6 +69,7 @@ const validateString = (string: string, lenght: number) => {
 };
 
 const validateNumber = (number: number, lenght: number) => {
+    
     if (!number) {
         return `you must insert a number`
     }

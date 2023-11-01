@@ -644,7 +644,7 @@ const appointmentValidation = async (req: Request, res: Response) => {
 
         return res.json({
             success: true,
-            message: "this appointment is yours and has been validated successfully"
+            message: "this appointment is yours and has been successfully"
         });
 
     } catch (error) {
