@@ -136,6 +136,13 @@ const validateAvailableDate = async (date: string, emailWorker: string, shift: s
         email: emailWorker
     });
 
+    if(findWorker?.role_id !== 2){
+        return {
+            isValid: false,
+            message: "worker not found, try again"
+        };
+    }
+
     const allAppointments = await Appointment.findBy({
         date,
         shift,
