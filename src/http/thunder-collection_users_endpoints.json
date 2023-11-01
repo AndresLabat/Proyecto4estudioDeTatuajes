@@ -1,0 +1,215 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "users_endpoints",
+    "dateExported": "2023-11-01T19:09:48.851Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "ce5be6ec-cdae-4972-bfef-aac80a870b45",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "RegisterUser",
+            "url": "localhost:4000/user/register",
+            "method": "POST",
+            "sortNum": 24375,
+            "created": "2023-10-27T18:40:31.009Z",
+            "modified": "2023-11-01T17:39:14.069Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"full_name\": \"superadmin\",\n  \"email\": \"superadmin@gmail.com\",\n  \"password\": \"Aa1234@\",\n  \"phone_number\": 666555666\n}\n",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c9f1d3c5-4758-4088-aa98-3398ae91420e",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "LoginUser",
+            "url": "localhost:4000/user/login",
+            "method": "POST",
+            "sortNum": 24687.5,
+            "created": "2023-10-27T18:40:42.451Z",
+            "modified": "2023-11-01T18:09:21.589Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"vincen@gmail.com\",\n  \"password\": \"Aa1234@\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "af7254db-8022-4454-8ab7-c188bd5ff032",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "ProfileUser",
+            "url": "localhost:4000/user/profile",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2023-10-27T18:40:19.428Z",
+            "modified": "2023-11-01T17:51:44.470Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJfYWRtaW4iLCJpYXQiOjE2OTg4NjA0MDQsImV4cCI6MTY5ODg3ODQwNH0.QsML-e5ziKXd1_60HPtRfbRU3WNuNbsO5QVNzMQEsbI"
+            },
+            "tests": []
+        },
+        {
+            "_id": "449c61c3-e77a-4ce7-a84c-046baa9d6408",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "UpdateUser",
+            "url": "localhost:4000/user/update",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2023-10-27T18:39:53.761Z",
+            "modified": "2023-11-01T17:52:21.146Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"full_name\": \"superadmin 2.0\",\n  \"password\": \"Aa1234@\",\n  \"phone_number\": 666333636\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJfYWRtaW4iLCJpYXQiOjE2OTg4NjA0MDQsImV4cCI6MTY5ODg3ODQwNH0.QsML-e5ziKXd1_60HPtRfbRU3WNuNbsO5QVNzMQEsbI"
+            },
+            "tests": []
+        },
+        {
+            "_id": "aca4df93-87f0-461a-86a4-07b8f75b5742",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "GetAllUsers",
+            "url": "localhost:4000/user/all?skip=3&page=1",
+            "method": "GET",
+            "sortNum": 32500,
+            "created": "2023-10-28T13:32:17.930Z",
+            "modified": "2023-11-01T18:03:04.673Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "skip",
+                    "value": "3",
+                    "isPath": false
+                },
+                {
+                    "name": "page",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJfYWRtaW4iLCJpYXQiOjE2OTg4NjE3NDQsImV4cCI6MTY5ODg3OTc0NH0.etF-rZNskV-Wq8YKrRKU_Aw28R8NcDq2X7SKAZeng9s"
+            },
+            "tests": []
+        },
+        {
+            "_id": "fb939ef5-72c4-44ce-810e-bacc6a09c23f",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "GetAllWorkers",
+            "url": "localhost:4000/user/allWorkers?skip=3&page=1",
+            "method": "GET",
+            "sortNum": 33750,
+            "created": "2023-10-30T15:31:28.997Z",
+            "modified": "2023-11-01T18:03:41.817Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "skip",
+                    "value": "3",
+                    "isPath": false
+                },
+                {
+                    "name": "page",
+                    "value": "1",
+                    "isPath": false
+                }
+            ],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsImVtYWlsIjoiYmllbnZlQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNjk4ODYxODEwLCJleHAiOjE2OTg4Nzk4MTB9.3ZAz3O3kmxg4IUWlTJI0EynxqAavcgGrUabbEzDwhVw"
+            },
+            "tests": []
+        },
+        {
+            "_id": "ad4e13d7-4306-4dba-b085-0f5d9d2500bb",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "CreateWorker",
+            "url": "localhost:4000/user/worker",
+            "method": "POST",
+            "sortNum": 35000,
+            "created": "2023-10-30T15:57:19.030Z",
+            "modified": "2023-11-01T17:53:46.313Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"full_name\": \"workerMazao\",\n  \"email\": \"workermazao@gmail.com\",\n  \"password\": \"Aa1234@\",\n  \"phone_number\": 666777999\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJfYWRtaW4iLCJpYXQiOjE2OTg4NjA0MDQsImV4cCI6MTY5ODg3ODQwNH0.QsML-e5ziKXd1_60HPtRfbRU3WNuNbsO5QVNzMQEsbI"
+            },
+            "tests": []
+        },
+        {
+            "_id": "4e2a78ce-097c-49b8-b22e-5d31554fd125",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "DeleteUserBySuperAdmin",
+            "url": "localhost:4000/user/delete",
+            "method": "DELETE",
+            "sortNum": 110000,
+            "created": "2023-10-30T16:08:17.459Z",
+            "modified": "2023-11-01T17:54:10.360Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 15\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJfYWRtaW4iLCJpYXQiOjE2OTg4NjA0MDQsImV4cCI6MTY5ODg3ODQwNH0.QsML-e5ziKXd1_60HPtRfbRU3WNuNbsO5QVNzMQEsbI"
+            },
+            "tests": []
+        },
+        {
+            "_id": "ba76f5b4-91cd-4de5-b257-34c2588872d4",
+            "colId": "f91abdf8-60f0-466d-82e5-5428ac9b1e33",
+            "containerId": "",
+            "name": "ChangeRoleBySuperAdmin",
+            "url": "localhost:4000/user/changeRole",
+            "method": "PUT",
+            "sortNum": 120000,
+            "created": "2023-10-31T17:34:16.666Z",
+            "modified": "2023-11-01T17:51:05.776Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\": 13,\n  \"role_id\": 2\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoic3VwZXJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoic3VwZXJfYWRtaW4iLCJpYXQiOjE2OTg4NjA0MDQsImV4cCI6MTY5ODg3ODQwNH0.QsML-e5ziKXd1_60HPtRfbRU3WNuNbsO5QVNzMQEsbI"
+            },
+            "tests": []
+        }
+    ]
+}

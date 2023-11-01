@@ -379,7 +379,7 @@ const deleteUserBySuperAdmin = async (req: Request, res: Response) => {
 const changeRole = async (req: Request, res: Response) => {
 
     try {
-        const { role_id, user_id } = req.body
+        const { role_id, id } = req.body
 
         if (validateNumber(role_id, 2)) {
             return res.json({ success: true, message: validateNumber(role_id, 2) });
@@ -392,17 +392,15 @@ const changeRole = async (req: Request, res: Response) => {
             })
         }
 
-        if (validateNumber(user_id, 7)) {
-            return res.json({ success: true, message: validateNumber(user_id, 7) });
+        if (validateNumber(id, 7)) {
+            return res.json({ success: true, message: validateNumber(id, 7) });
         }
 
         const usersId = await User.find()
 
-        const mapUsersId = usersId.map((obj) => {
-            obj.id
-        })
+        const mapUsersId = usersId.map((obj) => obj.id)
 
-        if (!mapUsersId.includes(user_id)) {
+        if (!mapUsersId.includes(id)) {
             return res.json({
                 success: true,
                 message: "user_id not exist."
@@ -410,7 +408,7 @@ const changeRole = async (req: Request, res: Response) => {
         }
 
         await User.update({
-            id: user_id
+            id
         }, {
             role_id
         })
@@ -419,7 +417,7 @@ const changeRole = async (req: Request, res: Response) => {
             success: true,
             message: "role of the user is updated succesfully",
             data: {
-                id: user_id,
+                id,
                 role_id
             }
         })

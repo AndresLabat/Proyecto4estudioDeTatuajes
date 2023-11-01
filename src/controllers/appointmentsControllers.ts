@@ -8,7 +8,7 @@ import { validateAvailableDate, validateDate, validateEmail, validateNumber, val
 const getAppointmentsUser = async (req: Request, res: Response) => {
 
     try {
-        const {id} = req.token
+        const { id } = req.token
 
         if (typeof (req.query.skip) !== "string") {
             return res.json({
@@ -193,7 +193,7 @@ const updateAppointment = async (req: Request, res: Response) => {
 
     try {
         const { id, date, shift, email, name } = req.body
-        const{ id:client_id } = req.token
+        const { id: client_id } = req.token
 
         if (validateNumber(id, 7)) {
             return res.json({ success: true, message: validateNumber(id, 7) });
@@ -222,7 +222,7 @@ const updateAppointment = async (req: Request, res: Response) => {
                 message: validationResult.message
             });
         }
-        
+
         const findWorker_id = await User.findOneBy({
             email
         })
@@ -311,8 +311,8 @@ const updateAppointment = async (req: Request, res: Response) => {
 const deleteAppointment = async (req: Request, res: Response) => {
 
     try {
-        const {id:deleteById} = req.body
-        const {id:clientId} = req.token
+        const { id: deleteById } = req.body
+        const { id: clientId } = req.token
 
         if (validateNumber(deleteById, 7)) {
             return res.json({ success: true, message: validateNumber(deleteById, 7) });
@@ -327,7 +327,10 @@ const deleteAppointment = async (req: Request, res: Response) => {
         )
 
         if (!appointments_id.includes(deleteById)) {
-            return res.json("no se puede borrar")
+            return res.json({
+                success: true,
+                message: "you can`t delete this appointment",
+            })
         }
 
         const deleteAppointmentById = await Appointment.delete({
@@ -351,7 +354,7 @@ const deleteAppointment = async (req: Request, res: Response) => {
 const getAppointmentsByWorker = async (req: Request, res: Response) => {
 
     try {
-        const {id} = req.token
+        const { id } = req.token
 
         if (typeof (req.query.skip) !== "string") {
             return res.json({
@@ -509,8 +512,12 @@ const getallAppointments = async (req: Request, res: Response) => {
 const getAppointmentDetail = async (req: Request, res: Response) => {
 
     try {
-        const {appointmentId} = req.body
-        const {id} = req.token
+        const { id: appointmentId } = req.body
+        const { id } = req.token
+
+        if (validateNumber(appointmentId, 7)) {
+            return res.json({ success: true, message: validateNumber(appointmentId, 7) });
+        }
 
         const appointmentsUser = await Appointment.find({
             where: {
@@ -573,8 +580,9 @@ const getAppointmentDetail = async (req: Request, res: Response) => {
 const appointmentValidation = async (req: Request, res: Response) => {
 
     try {
-        const { email:emailWorker, date, shift } = req.body
- 
+        const { email: emailWorker, date, shift } = req.body
+        const { id } = req.token
+
         if (validateEmail(emailWorker)) {
             return res.json({ success: true, message: validateEmail(emailWorker) });
         }
@@ -605,35 +613,44 @@ const appointmentValidation = async (req: Request, res: Response) => {
             email: emailWorker
         })
 
-        if(workerInfo?.role_id !== 2){
+        if (workerInfo?.role_id !== 2) {
             return res.json({
                 success: true,
                 message: "worker not found, try again"
             });
         }
 
-        const allAppointments = await Appointment.findBy({
+        const allAppointmentsByWorker = await Appointment.findOneBy({
             date,
             shift,
             worker_id: workerInfo?.id
         })
 
-        if (allAppointments.length !== 0) {
+        if(!allAppointmentsByWorker){
             return res.json({
                 success: true,
-                message: "The appointment is not available, try a different date or shift"
+                message: "This appointment not exist"
+            });
+        }
+
+        const client_id = allAppointmentsByWorker?.client_id
+
+        if (id !== client_id){
+            return res.json({
+                success: true,
+                message: "this appointment it`s not yours"
             });
         }
 
         return res.json({
             success: true,
-            message: "The appointment is available"
+            message: "this appointment is yours and has been validated successfully"
         });
 
     } catch (error) {
         return res.json({
             success: false,
-            message: "Appointments cannot be retrieved, please try again.",
+            message: "appointments cannot be retrieved, please try again",
             error
         })
     }
