@@ -3,12 +3,12 @@ import { Appointment } from "../models/Appointment"
 import { User } from "../models/User"
 import { Portfolio } from "../models/Portfolio"
 import { Appointment_portfolio } from "../models/Appointment_portfolio"
-import { validateDate, validateEmail, validateShift, validateString } from "../validations/validations"
+import { validateAvailableDate, validateDate, validateEmail, validateNumber, validateShift, validateString } from "../validations/validations"
 
 const getAppointmentsUser = async (req: Request, res: Response) => {
 
     try {
-        const id = req.token.id
+        const {id} = req.token
 
         if (typeof (req.query.skip) !== "string") {
             return res.json({
@@ -103,6 +103,14 @@ const createAppointment = async (req: Request, res: Response) => {
             return res.json({ success: true, message: validateEmail(email) });
         }
 
+        const validationResult = await validateAvailableDate(date, email, shift);
+        if (!validationResult.isValid) {
+            return res.json({
+                success: true,
+                message: validationResult.message
+            });
+        }
+
         const loginByEmail = await User.findOne({
             where: { email },
             relations: ["role"]
@@ -185,38 +193,36 @@ const updateAppointment = async (req: Request, res: Response) => {
 
     try {
         const { id, date, shift, email, name } = req.body
-        const client_id = req.token.id
+        const{ id:client_id } = req.token
 
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-        if (!email) {
-            return res.json({
-                success: true,
-                message: "you must insert an email",
-            })
+        if (validateNumber(id, 7)) {
+            return res.json({ success: true, message: validateNumber(id, 7) });
         }
 
-        if (typeof (email) !== "string") {
+        if (validateDate(date)) {
+            return res.json({ success: true, message: validateDate(date) });
+        }
+
+        if (validateShift(shift)) {
+            return res.json({ success: true, message: validateShift(shift) });
+        }
+
+        if (validateString(name, 50)) {
+            return res.json({ success: true, message: validateString(name, 50) });
+        }
+
+        if (validateEmail(email)) {
+            return res.json({ success: true, message: validateEmail(email) });
+        }
+
+        const validationResult = await validateAvailableDate(date, email, shift);
+        if (!validationResult.isValid) {
             return res.json({
                 success: true,
-                mensaje: 'email incorrect, you can put only strings, try again'
+                message: validationResult.message
             });
         }
-
-        if (email.length > 100) {
-            return res.json({
-                success: true,
-                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
-            });
-        }
-
-        if (!emailRegex.test(email)) {
-            return res.json({
-                success: true,
-                mensaje: 'email format incorrect, try again'
-            });
-        }
-
+        
         const findWorker_id = await User.findOneBy({
             email
         })
@@ -229,64 +235,6 @@ const updateAppointment = async (req: Request, res: Response) => {
         }
 
         const worker_id = findWorker_id?.id
-
-        if (!id) {
-            return res.json({
-                success: true,
-                message: "you must insert an id",
-            })
-        }
-
-        if (typeof (id) !== "number") {
-            return res.json({
-                success: true,
-                mensaje: "id incorrect, you can put only numbers, try again"
-            });
-        }
-
-        if (!date) {
-            return res.json({
-                success: true,
-                message: "you must insert a date",
-            })
-        }
-
-        if (typeof (date) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: "date incorrect, you can put only strings, try again"
-            });
-        }
-
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
-        if (!dateRegex.test(date)) {
-            return res.json({
-                success: true,
-                mensaje: "date incorrect, The date format should be YYYY-MM-DD, try again"
-            });
-        }
-
-        if (!shift) {
-            return res.json({
-                success: true,
-                message: "you must insert a shift",
-            })
-        }
-
-        if (typeof (shift) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: "shift incorrect, you can put only strings, try again"
-            });
-        }
-
-        if (shift !== "morning" && shift !== "afternoon") {
-            return res.json({
-                success: true,
-                mensaje: "shift incorrect, you only can put morning or afternoon, try again"
-            });
-        }
 
         const appointmentsClient = await Appointment.findBy({
             client_id,
@@ -301,34 +249,6 @@ const updateAppointment = async (req: Request, res: Response) => {
                 success: true,
                 message: "appointment updated not succesfully, incorrect id"
             })
-        }
-
-        if (!name) {
-            return res.json({
-                success: true,
-                message: "you must insert an name",
-            })
-        }
-
-        if (typeof (name) !== "string") {
-            return res.json({
-                success: true,
-                mensaje: 'name incorrect, you can put only strings, try again'
-            });
-        }
-
-        if (name.length == 0) {
-            return res.json({
-                success: true,
-                mensaje: 'name too short, try to insert a larger name, max 100 characters'
-            });
-        }
-
-        if (name.length > 100) {
-            return res.json({
-                success: true,
-                mensaje: 'name too long, try to insert a shorter name, max 100 characters'
-            });
         }
 
         const getPurchaseItems = await Portfolio.find()
@@ -360,11 +280,7 @@ const updateAppointment = async (req: Request, res: Response) => {
         })
 
         const dataAppointmentUpdated = await Appointment.findOneBy({
-            id: id
-        })
-
-        const getPortfolio = await Portfolio.findOneBy({
-            name
+            id
         })
 
         return res.json({
@@ -377,7 +293,7 @@ const updateAppointment = async (req: Request, res: Response) => {
                 email,
                 id: id,
                 purchaseName: name,
-                category: getPortfolio?.category,
+                category: nameProduct?.category,
                 created_at: dataAppointmentUpdated?.created_at,
                 updated_at: dataAppointmentUpdated?.updated_at
             }
@@ -395,21 +311,11 @@ const updateAppointment = async (req: Request, res: Response) => {
 const deleteAppointment = async (req: Request, res: Response) => {
 
     try {
-        const deleteById = req.body.id
-        const clientId = req.token.id
+        const {id:deleteById} = req.body
+        const {id:clientId} = req.token
 
-        if (!deleteById) {
-            return res.json({
-                success: true,
-                message: "you must insert an id",
-            })
-        }
-
-        if (typeof (deleteById) !== "number") {
-            return res.json({
-                success: true,
-                mensaje: "id incorrect, you can put only numbers, try again"
-            });
+        if (validateNumber(deleteById, 7)) {
+            return res.json({ success: true, message: validateNumber(deleteById, 7) });
         }
 
         const getUser = await Appointment.findBy({
@@ -445,7 +351,7 @@ const deleteAppointment = async (req: Request, res: Response) => {
 const getAppointmentsByWorker = async (req: Request, res: Response) => {
 
     try {
-        const id = req.token.id
+        const {id} = req.token
 
         if (typeof (req.query.skip) !== "string") {
             return res.json({
@@ -603,8 +509,8 @@ const getallAppointments = async (req: Request, res: Response) => {
 const getAppointmentDetail = async (req: Request, res: Response) => {
 
     try {
-        const appointmentId = req.body.id
-        const id = req.token.id
+        const {appointmentId} = req.body
+        const {id} = req.token
 
         const appointmentsUser = await Appointment.find({
             where: {

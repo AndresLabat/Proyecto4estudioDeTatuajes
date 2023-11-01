@@ -113,7 +113,7 @@ const login = async (req: Request, res: Response) => {
 const profile = async (req: Request, res: Response) => {
 
     try {
-        const email = req.token.email
+        const {email} = req.body
 
         const profileUser = await User.findOneBy({
             email
@@ -142,7 +142,7 @@ const updateUser = async (req: Request, res: Response) => {
 
     try {
         const { full_name, password, phone_number } = req.body
-        const id = req.token.id
+        const {id} = req.token
 
         if (validateString(full_name, 50)) {
             return res.json({ success: true, message: validateString(full_name, 50) });

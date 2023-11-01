@@ -1,3 +1,6 @@
+import { Appointment } from "../models/Appointment";
+import { User } from "../models/User";
+
 const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -113,6 +116,42 @@ const validatePassword = (password: string) => {
     }
 };
 
+const validateAvailableDate = async (date: string, emailWorker: string, shift: string) => {
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate() + 1;
+
+    const todayFormatDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+
+    if (todayFormatDate > date) {
+        return {
+            isValid: false,
+            message: "this day is prior to the current day, try again."
+        };
+    }
+
+    const findWorker = await User.findOneBy({
+        email: emailWorker
+    });
+
+    const allAppointments = await Appointment.findBy({
+        date,
+        shift,
+        worker_id: findWorker?.id
+    });
+
+    if (allAppointments.length !== 0) {
+        return {
+            isValid: false,
+            message: "The appointment is not available, try a different date or shift"
+        };
+    }
+
+    return { isValid: true };
+};
 
 
-export { validateDate, validateString, validateShift, validateEmail, validateNumber, validatePassword }
+export { validateDate, validateString, validateShift, validateEmail, 
+    validateNumber, validatePassword, validateAvailableDate }
