@@ -1,5 +1,7 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm"
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany, ManyToOne, JoinColumn } from "typeorm"
 import { Portfolio } from "./Portfolio";
+import { Appointment_portfolio } from "./Appointment_portfolio";
+import { User } from "./User";
 
 @Entity("appointments")
 export class Appointment extends BaseEntity {
@@ -41,4 +43,20 @@ export class Appointment extends BaseEntity {
     })
     appointmentPortfolios!: Portfolio[]
 
+    @OneToMany(() => Appointment_portfolio, (Appointment_portfolio) => Appointment_portfolio.appointment)
+    appointment_portfolios!: Appointment_portfolio[];
+
+    @ManyToOne(() => User, (user) => user.clientAppointments)
+    @JoinColumn ({name: "client_id"})
+    client!: User[];
+
+    @OneToMany(() => User, (user) => user.client)
+    clientUsers!: User[];
+
+    @ManyToOne(() => User, (user) => user.workerAppointments)
+    @JoinColumn ({name: "worker_id"})
+    worker!: User[];
+
+    @OneToMany(() => User, (user) => user.worker)
+    workerUsers!: User[];
 }

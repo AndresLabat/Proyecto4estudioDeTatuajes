@@ -36,3 +36,5 @@ Migraciones (tener en cuenta):
 
 
 buscar imagenes para URL de Portfolio
+La relacion many to many tmb tiene con la intermedia un one to many y un many to one
+se eliminaran las busqueda innecesarias y los promise.all
