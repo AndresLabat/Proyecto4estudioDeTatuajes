@@ -367,7 +367,7 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
 
         const appointmentsWorker = await Appointment.find({
             where: { worker_id: id },
-            relations: ["appointmentPortfolios"],
+            relations: ["appointmentPortfolios", "client"],
             skip: skip,
             take: pageSize
         })
@@ -375,19 +375,17 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
         const appointmentsWorkerForShows = await Promise.all(appointmentsWorker
             .filter((obj) => obj.status === false)
             .map(async (obj) => {
-                const { worker_id, client_id, appointmentPortfolios, ...rest } = obj;
+                const { worker_id, client_id, appointmentPortfolios, client, ...rest } = obj;
                 const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
                 const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
+                const clientInfo = obj.client
 
-                const client = await User.findOneBy({
-                    id: client_id
-                });
-                if (client) {
+                if (clientInfo) {
                     const name = nameProduct[0]
                     const category = categoryProduct[0]
-                    const client_name = client.full_name
-                    const client_email = client.email;
-                    const is_active = client.is_active;
+                    const client_name = clientInfo.full_name
+                    const client_email = clientInfo.email;
+                    const is_active = clientInfo.is_active;
                     return { name, category, client_name, client_email, is_active, ...rest };
                 }
                 else {
