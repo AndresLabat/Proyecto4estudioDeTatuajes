@@ -38,16 +38,8 @@ export class User extends BaseEntity {
     @OneToMany(() => Appointment, (appointment) => appointment.client)
     clientAppointments!: Appointment[];
 
-    @ManyToOne(() => Appointment, (appointment) => appointment.clientUsers)
-    @JoinColumn ({name: "client_id"})
-    client!: User[];
-
     @OneToMany(() => Appointment, (appointment) => appointment.worker)
     workerAppointments!: Appointment[];
-
-    @ManyToOne(() => Appointment, (appointment) => appointment.workerUsers)
-    @JoinColumn ({name: "client_id"})
-    worker!: User[];
 }
 
 

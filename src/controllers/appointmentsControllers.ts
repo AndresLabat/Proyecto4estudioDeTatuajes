@@ -32,26 +32,23 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
             where: {
                 client_id: id
             },
-            relations: ["appointmentPortfolios"],
+            relations: ["appointmentPortfolios", "worker"],
             skip: skip,
             take: pageSize
         })
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
-            const { status, worker_id, client_id, appointmentPortfolios, ...rest } = obj;
-            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
+            const { status, worker_id, client_id, appointmentPortfolios, worker, ...rest } = obj;
+            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
             const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
+            const infoWorker = obj.worker
 
-            const worker = await User.findOneBy({
-                id: worker_id
-            });
-
-            if (worker) {
-                const full_name = worker.full_name
-                const email = worker.email;
-                const is_active = worker.is_active;
-                const name = nameProduct[0]
-                const category = categoryProduct[0]
+            if (infoWorker && (nameProduct.length !==0) && (categoryProduct.length !==0)) {
+                const full_name = infoWorker.full_name;
+                const email = infoWorker.email;
+                const is_active = infoWorker.is_active;
+                const name = nameProduct[0];
+                const category = categoryProduct[0];
                 return { name, category, email, full_name, is_active, ...rest };
             }
             else {
