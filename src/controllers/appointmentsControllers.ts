@@ -43,7 +43,7 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
             const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
             const infoWorker = obj.worker
 
-            if (infoWorker && (nameProduct.length !==0) && (categoryProduct.length !==0)) {
+            if (infoWorker && (nameProduct.length !== 0) && (categoryProduct.length !== 0)) {
                 const full_name = infoWorker.full_name;
                 const email = infoWorker.email;
                 const is_active = infoWorker.is_active;
@@ -156,7 +156,7 @@ const createAppointment = async (req: Request, res: Response) => {
             appointment_id: createNewAppointment.id,
             portfolio_id: getPortfolio?.id
         }).save()
-        
+
         return res.json({
             success: true,
             message: "appointment created succesfully",
@@ -589,33 +589,29 @@ const appointmentValidation = async (req: Request, res: Response) => {
             });
         }
 
-        const workerInfo = await User.findOneBy({
-            email: emailWorker
+        const findAppointmentWorker = await Appointment.find({
+            where: {
+                date,
+                shift,
+            },
+            relations: ["worker"],
         })
 
-        if (workerInfo?.role_id !== 2) {
-            return res.json({
-                success: true,
-                message: "worker not found, try again"
-            });
-        }
-
-        const allAppointmentsByWorker = await Appointment.findOneBy({
-            date,
-            shift,
-            worker_id: workerInfo?.id
-        })
-
-        if(!allAppointmentsByWorker){
+        if(findAppointmentWorker.length == 0){
             return res.json({
                 success: true,
                 message: "This appointment not exist"
             });
         }
 
-        const client_id = allAppointmentsByWorker?.client_id
+        const mapAppointmentWorker = findAppointmentWorker.map((obj)=>{
+            const workerEmail = obj.worker.email
+            if(workerEmail == emailWorker){
+                return obj.client_id
+            }
+        })
 
-        if (id !== client_id){
+        if (id !== mapAppointmentWorker[0]) {
             return res.json({
                 success: true,
                 message: "this appointment it`s not yours"
