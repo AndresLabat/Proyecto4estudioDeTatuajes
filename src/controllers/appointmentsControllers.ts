@@ -134,10 +134,11 @@ const createAppointment = async (req: Request, res: Response) => {
             })
         }
 
-        const getPurchaseItems = await Portfolio.find()
-        const mapPortfolio = getPurchaseItems.map((obj) => obj.name)
+        const getPortfolio = await Portfolio.findOneBy({
+            name: purchase_Name
+        })
 
-        if (!mapPortfolio.includes(purchase_Name)) {
+        if (!getPortfolio) {
             return res.json({
                 success: true,
                 message: "the name of the item purchase doesn't exist",
@@ -151,15 +152,11 @@ const createAppointment = async (req: Request, res: Response) => {
             client_id: id
         }).save()
 
-        const getPortfolio = await Portfolio.findOneBy({
-            name: purchase_Name
-        })
-
         await Appointment_portfolio.create({
             appointment_id: createNewAppointment.id,
             portfolio_id: getPortfolio?.id
         }).save()
-
+        
         return res.json({
             success: true,
             message: "appointment created succesfully",
@@ -169,9 +166,9 @@ const createAppointment = async (req: Request, res: Response) => {
                 workerName: loginByEmail.full_name,
                 email: email,
                 id: createNewAppointment.id,
-                purchaseName: getPortfolio?.name,
-                category: getPortfolio?.category,
-                price: getPortfolio?.price,
+                purchaseName: getPortfolio.name,
+                category: getPortfolio.category,
+                price: getPortfolio.price,
                 created_at: createNewAppointment.created_at,
                 updated_at: createNewAppointment.updated_at
             }
