@@ -143,30 +143,23 @@ const validateAvailableDate = async (date: string, emailWorker: string, shift: s
     let isValid = true;
 
     findAppointmentWorker.forEach(appointment => {
-        if (appointment.worker.role_id !== 2) {
+        if (appointment.worker.role_id !== 2 ||
+            appointment.date === date && appointment.shift === shift &&
+            appointment.worker.email === emailWorker) {
             isValid = false;
         }
     });
-
+    
     if (!isValid) {
         return {
             isValid: false,
-            message: "Worker not found, try again.",
+            message: "this appointment it's not available, try again"
         };
     }
 
-    findAppointmentWorker.map((obj) => {
-        const workerEmail = obj.worker.email
-        if (workerEmail == emailWorker) {
-            return {
-                isValid: false,
-                message: "The appointment is not available, try a different date, shift, or worker"
-            };
-        }
-    })
-
     return { isValid: true };
 };
+
 
 export {
     validateDate, validateString, validateShift, validateEmail,
