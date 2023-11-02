@@ -438,23 +438,17 @@ const getallAppointments = async (req: Request, res: Response) => {
         const skip = (page - 1) * pageSize
 
         const appointmentsUser = await Appointment.find({
-            relations: ["appointmentPortfolios"],
+            relations: ["appointmentPortfolios", "client", "worker"],
             skip: skip,
             take: pageSize
         })
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
-            const { worker_id, client_id, appointmentPortfolios, ...rest } = obj;
+            const { worker_id, client_id, appointmentPortfolios, client, worker, ...rest } = obj;
             const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
             const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
-
-            const clientInfo = await User.findOneBy({
-                id: client_id
-            });
-
-            const workerInfo = await User.findOneBy({
-                id: worker_id
-            });
+            const clientInfo = obj.client
+            const workerInfo = obj.worker
 
             if (clientInfo && workerInfo) {
                 const client_email = clientInfo.email;
