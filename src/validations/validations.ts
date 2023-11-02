@@ -1,5 +1,4 @@
 import { Appointment } from "../models/Appointment";
-import { User } from "../models/User";
 
 const validateEmail = (email: string) => {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -55,7 +54,7 @@ const validateString = (string: string, lenght: number) => {
         return `you must insert ${string}`
     }
 
-    if (typeof(string) !== "string") {
+    if (typeof (string) !== "string") {
         return `you must insert a string`
     }
 
@@ -69,23 +68,23 @@ const validateString = (string: string, lenght: number) => {
 };
 
 const validateNumber = (number: number, lenght: number) => {
-    
+
     if (!number) {
         return `you must insert a number`
     }
 
-    if (typeof(number) !== "number") {
+    if (typeof (number) !== "number") {
         return `you must insert a number`
     }
 
     const stringNumber = number.toString()
-    if(stringNumber.length > lenght){
+    if (stringNumber.length > lenght) {
         return `number too long, try to insert a shorter one, max ${lenght} characters`
     }
 };
 
 const validatePassword = (password: string) => {
-    
+
     const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{4,12}$/;
 
     if (!password) {
@@ -133,33 +132,43 @@ const validateAvailableDate = async (date: string, emailWorker: string, shift: s
         };
     }
 
-    const findWorker = await User.findOneBy({
-        email: emailWorker
+    const findAppointmentWorker = await Appointment.find({
+        where: {
+            date,
+            shift,
+        },
+        relations: ["worker"],
+    })
+
+    let isValid = true;
+
+    findAppointmentWorker.forEach(appointment => {
+        if (appointment.worker.role_id !== 2) {
+            isValid = false;
+        }
     });
 
-    if(findWorker?.role_id !== 2){
+    if (!isValid) {
         return {
             isValid: false,
-            message: "worker not found, try again"
+            message: "Worker not found, try again.",
         };
     }
 
-    const allAppointments = await Appointment.findBy({
-        date,
-        shift,
-        worker_id: findWorker?.id
-    });
-
-    if (allAppointments.length !== 0) {
-        return {
-            isValid: false,
-            message: "The appointment is not available, try a different date or shift"
-        };
-    }
+    findAppointmentWorker.map((obj) => {
+        const workerEmail = obj.worker.email
+        if (workerEmail == emailWorker) {
+            return {
+                isValid: false,
+                message: "The appointment is not available, try a different date, shift, or worker"
+            };
+        }
+    })
 
     return { isValid: true };
 };
 
-
-export { validateDate, validateString, validateShift, validateEmail, 
-    validateNumber, validatePassword, validateAvailableDate }
+export {
+    validateDate, validateString, validateShift, validateEmail,
+    validateNumber, validatePassword, validateAvailableDate
+}
