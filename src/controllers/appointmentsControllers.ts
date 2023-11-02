@@ -245,19 +245,16 @@ const updateAppointment = async (req: Request, res: Response) => {
             })
         }
 
-        const getPurchaseItems = await Portfolio.find()
-        const mapPortfolio = getPurchaseItems.map((obj) => obj.name)
+        const nameProduct = await Portfolio.findOneBy({
+            name
+        })
 
-        if (!mapPortfolio.includes(name)) {
+        if (!nameProduct) {
             return res.json({
                 success: true,
                 message: "the name of the item purchase doesn't exist",
             })
         }
-
-        const nameProduct = await Portfolio.findOneBy({
-            name
-        })
 
         await Appointment.update({
             id
@@ -285,7 +282,7 @@ const updateAppointment = async (req: Request, res: Response) => {
                 shift,
                 workerName: findWorker_id?.full_name,
                 email,
-                id: id,
+                id,
                 purchaseName: name,
                 category: nameProduct?.category,
                 created_at: dataAppointmentUpdated?.created_at,
