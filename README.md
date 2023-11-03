@@ -47,19 +47,8 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
   </ol>
 </details>
 
-## 🎯Objetivo
-Este proyecto requería una API funcional conectada a una base de datos con al menos una relación de uno a muchos y una relación de muchos a muchos.
-
-## Sobre el proyecto
-Decidí crear una aplicación web para ayudar a los amantes del gimnasio, que les permitiría crear y realizar un seguimiento de nuevas rutinas para sus ejercicios diarios. He visto muchas apps de este estilo pero ninguna que nos permita cambiar tan libremente las rutinas adaptandolas a nuestras necesidades.    
-
-## Deploy 🚀
-
-Por el momento su unico uso es en local, en el futuro de realizará el deploy en la siguiente URL:
-<div align="center">
-    <a href="https://www.google.com"><strong>Url a producción </strong></a>🚀🚀🚀
-</div>
-
+## 🎯 Objetivo
+Este proyecto requería una API funcional conectada a una base de datos con al menos una relación de uno a muchos y una relación de muchos a muchos. 
 
 ## 🔧 Tecnologías Utilizadas
 
@@ -82,21 +71,21 @@ Por el momento su unico uso es en local, en el futuro de realizará el deploy en
     <code><img width="6%" src="https://www.svgrepo.com/show/35001/github.svg"></code>
 
 
-## Diagrama BD
+## 🏗️ Diagrama BD
 
 Se establece que solo hay un rol por usuario, y que este es el que le da los privilegios para poder usar algunos endpoints o no, por otro lado, la tabla "users" almacena tanto los clientes como los trabajadores, que se unen en la citas, siendo esta última una tabla intermedia.
 Además en cada cita se pueden realizar varios tatuajes o piercings y el mismo piercing o tatuaje realizarse en varias citas diferentes.
 <p>
    <div align="center">
-      <img src="./img README/reverse engineer.jpeg" style="max-width: 100%">
+      <img src="./img README/reverse-engineer.jpeg" style="max-width: 100%">
    </div>    
 </p>
 
-## 🍃Ramas del Repositorio
+## 🍃 Ramas del Repositorio
 
 Este proyecto se ha desarrollado en tres ramas. En la rama "dev" se han realizado las partes de maquetación y estilos en html y css, por otro lado en la rama "feature" se le han añadido las funcionalidades a los botones y se ha creado la lógica que permite jugar al MasterMind desde Javascript y, por último, todo este desarrollo en ambas ramas se ha unido a la rama principal "master", donde se ha creado este README.
 
-## ⚙️Instrucciones de Uso
+## ⚙️ Instrucciones de Uso
 
 1. Clona este repositorio en tu máquina local usando el siguiente comando: `git clone [URL del repositorio]`.
 2. A continuación instala todas las dependencias con el comando ` $ npm install `
@@ -143,11 +132,49 @@ Este proyecto se ha desarrollado en tres ramas. En la rama "dev" se han realizad
     - ...
 </details>
 
-## Futuras funcionalidades
-[ ] Añadir create book  
-[ ] Añadir logs  con winston  
-[ ] Validaciones de la solicitud con express-validator  
-[ ] ...
+## 🚄 Futuras funcionalidades
+
+Añadir el CRUD de portfolio:
+- Get portfolio
+- Create portfolio  
+- Update portfolio  
+- Delete portfolio
+
+Crear un endpoint que permita añadir mas productos de portfolio a un appointment.
+- Add product to the appointment
+
+
+## ⚠️ Problemas y Soluciones
+
+### 1. Al crear las relaciones many to many entre dos tablas fuertes sin crear las one to many de la tabla intermedia a la fuerte.
+
+- **🚧Problema**: Al crear las relaciones many to many entre dos tablas fuertes sin crear las one to many de la tabla intermedia a la fuerte no podía con una única búsqueda acceder a toda la información que necesitaba al estar en dos tablas distintas sin una relación directa creada.
+
+   - **💡Solución**: establecer una relación one to many de las tablas fuertes a la intermedia, de forma que ahora con el nuevo atributo puedes acceder a toda la información de la tabla en forma de array y evitas hacer más de una consulta.
+
+<p>
+   <div align="center">
+      <img src="img README/many-to-one.jpeg" style="max-width: 100%;" width="500">
+   </div>    
+   <div align="center">
+      <em><b>Aqui se ve la relación many to one de la tabla intermedia a sus dos tablas fuertes</b></em>
+   </div>   
+</p>
+
+### 2. Los endpoints contienen demasiadas líneas y demasiada lógica al tener muchos validadores.
+
+- **🚧Problema**: cada endpoint contiene toda su lógica propia y todos los validadores de los datos de entrada, por lo que tienen mucha responsabilidad y ocupan demasiadas líneas de código.
+
+   - **💡Solución**: abstraer los validadores a un archivo independiente llamado validations.ts e importarlos en los endpoints cuando son necesarios.
+
+<p>
+   <div align="center">
+      <img src="img README/validations.jpeg" style="max-width: 100%;" width="500">
+   </div>    
+   <div align="center">
+      <em><b>cada validador contiene su lógica y es exportado para su uso en los controladores</b></em>
+   </div>   
+</p>
 
 
 ## Desarrollo:
@@ -157,6 +184,10 @@ Este proyecto se ha desarrollado en tres ramas. En la rama "dev" se han realizad
 
  console.log("Desarrollado por: " + developer);
 ```  
+
+## 🚀 Deploy
+
+Por el momento su único uso es en local, en el futuro de realizará el deploy.
 
 ## 🤝 Cómo Contribuir
 
@@ -174,7 +205,7 @@ Si deseas contribuir a este proyecto, puedes realizar un fork del repositorio en
 
 Espero que disfrutes explorando y utilizando este backend del estudio de tatuajes. Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto conmigo a través de la información de contacto proporcionada.
 
-## 📝Autor
+## 📝 Autor
 
 - **Nombre**: Andrés Labat Beltrán
 - **Fecha de Comienzo del Proyecto**: 26/10/2023
@@ -187,7 +218,7 @@ Espero que disfrutes explorando y utilizando este backend del estudio de tatuaje
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para obtener más información.
 
-## 👏Agradecimientos
+## 👏 Agradecimientos
 
 Agradecimentos a GeeksHubs Academy por los conocimientos que he podido adquirir estas cuatro semanas y que han hecho posible este proyecto, y a nuestros queridos profesores David Ochando y Dani Tarazona y su gran paciencia con nosotros.
 
@@ -200,4 +231,3 @@ Agradecimentos a GeeksHubs Academy por los conocimientos que he podido adquirir 
 Quiero hacer una mención especial a mi mujer, Alba, ya que sin su apoyo e inspiracion ni este ni ningún otro proyecto llegarían a ser una realidad.
 
 ¡Gracias por visitar **Estudio de tatuajes** y explorar mi proyecto!
-</p>
