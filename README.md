@@ -28,29 +28,31 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
 ## 📋 Contenido del Readme
 
 <details>
-  <summary>Apartados del readme</summary>
-  <ol>
+  <summary>Apartados</summary>
+<ol>
     <li><a href="#objetivo">Objetivo</a></li>
-    <li><a href="#sobre-el-proyecto">Sobre el proyecto</a></li>
-    <li><a href="#deploy-🚀">Deploy</a></li>
-    <li><a href="#stack">Stack</a></li>
-    <li><a href="#diagrama-bd">Diagrama</a></li>
-    <li><a href="#instalación-en-local">Instalación</a></li>
+    <li><a href="#tecnologías-utilizadas">Tecnologías Utilizadas</a></li>
+    <li><a href="#diagrama-bd">Diagrama BD</a></li>
+    <li><a href="#ramas-del-repositorio">Ramas del Repositorio</a></li>
+    <li><a href="#instrucciones-de-uso">Instrucciones de Uso</a></li>
     <li><a href="#endpoints">Endpoints</a></li>
-    <li><a href="#futuras-funcionalidades">Futuras funcionalidades</a></li>
-    <li><a href="#contribuciones">Contribuciones</a></li>
+    <li><a href="#futuras-funcionalidades">Futuras Funcionalidades</a></li>
+    <li><a href="#problemas-y-soluciones">Problemas y Soluciones</a></li>
+    <li><a href="#deploy">Deploy</a></li>
+    <li><a href="#cómo-contribuir">Cómo Contribuir</a></li>
+    <li><a href="#autor">Autor</a></li>
     <li><a href="#licencia">Licencia</a></li>
-    <li><a href="#webgrafia">Webgrafia</a></li>
-    <li><a href="#desarrollo">Desarrollo</a></li>
     <li><a href="#agradecimientos">Agradecimientos</a></li>
-    <li><a href="#contacto">Contacto</a></li>
   </ol>
 </details>
 
-## 🎯 Objetivo
+## 🎯 Objetivo {#objetivo}
 Este proyecto requería una API funcional conectada a una base de datos con al menos una relación de uno a muchos y una relación de muchos a muchos. 
 
-## 🔧 Tecnologías Utilizadas
+## 🔧 Tecnologías Utilizadas {#tecnologías-utilizadas}
+
+<details>
+<summary>Tecnologías</summary>
 
 - **Typescript**: es el lenguaje de programación sobre el que se han montado el servidor y los distintos endpoints.
   <code><img width="5%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/512px-Typescript_logo_2020.svg.png"></code>
@@ -70,8 +72,9 @@ Este proyecto requería una API funcional conectada a una base de datos con al m
 - **GitHub**: Plataforma para alojar el repositorio en línea y colaborar en el desarrollo del proyecto.
     <code><img width="6%" src="https://www.svgrepo.com/show/35001/github.svg"></code>
 
+</details>
 
-## 🏗️ Diagrama BD
+## 🏗️ Diagrama BD {#diagrama-bd}
 
 Se establece que solo hay un rol por usuario, y que este es el que le da los privilegios para poder usar algunos endpoints o no, por otro lado, la tabla "users" almacena tanto los clientes como los trabajadores, que se unen en la citas, siendo esta última una tabla intermedia.
 Además en cada cita se pueden realizar varios tatuajes o piercings y el mismo piercing o tatuaje realizarse en varias citas diferentes.
@@ -81,22 +84,41 @@ Además en cada cita se pueden realizar varios tatuajes o piercings y el mismo p
    </div>    
 </p>
 
-## 🍃 Ramas del Repositorio
+## 🍃 Ramas del Repositorio {#ramas-del-repositorio}
 
-Este proyecto se ha desarrollado en tres ramas. En la rama "dev" se han realizado las partes de maquetación y estilos en html y css, por otro lado en la rama "feature" se le han añadido las funcionalidades a los botones y se ha creado la lógica que permite jugar al MasterMind desde Javascript y, por último, todo este desarrollo en ambas ramas se ha unido a la rama principal "master", donde se ha creado este README.
+Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado toda la lógica y todo lo referente a node.js, express y typescript y, por otro lado, en la rama "master" fue donde de inició el proyecto y donde finalmente se ha creado este README.
 
-## ⚙️ Instrucciones de Uso
+## ⚙️ Instrucciones de Uso {#instrucciones-de-uso}
+
+<details>
+<summary>Instrucciones</summary>
 
 1. Clona este repositorio en tu máquina local usando el siguiente comando: `git clone [URL del repositorio]`.
 2. A continuación instala todas las dependencias con el comando ` $ npm install `
-3. Conectamos nuestro repositorio con la base de datos mediante las credenciales en el archivo db.ts
+3. Conectamos nuestro repositorio con la base de datos mediante las credenciales en el archivo db.ts o, en este caso, con las variables de entorno que se encuentran en el archivo .env
+
+    ``` js
+        PORT =   
+        DB_HOST= 
+        DB_USERNAME= ""
+        DB_PASSWORD= ""
+        DB_NAME=""
+        DB_PORT=   
+        
+        //  Aqui además almacenamos el secreto del token  
+        JWT_SECRET= ""
+    ```  
+
 4. Ejecutamos las migraciones mediante el comando `npx typeorm-ts-node-commonjs migration:run -d ./src/db.ts` 
 5. Si estamos en desarrollo, lo hacemos funcionar y actualizarse en tiempo real mediante el comando `npm run dev`
 6. Si queremos compilar usamos el comando `npm run build`
 7. Si estamos en producción, lo ponemos en marcha con el comando `npm run start`
 8. Usamos los endpoints almacenados en la carpeta http para usar las distintas funcionalidades que se han diseñado.
 
-## Endpoints
+</details>
+
+## 👀 Endpoints {#endpoints}
+
 <details>
 <summary>Endpoints</summary>
 
@@ -132,7 +154,7 @@ Este proyecto se ha desarrollado en tres ramas. En la rama "dev" se han realizad
     - ...
 </details>
 
-## 🚄 Futuras funcionalidades
+## 🚄 Futuras Funcionalidades {#futuras-funcionalidades}
 
 Añadir el CRUD de portfolio:
 - Get portfolio
@@ -144,7 +166,7 @@ Crear un endpoint que permita añadir mas productos de portfolio a un appointmen
 - Add product to the appointment
 
 
-## ⚠️ Problemas y Soluciones
+## ⚠️ Problemas y Soluciones {#problemas-y-soluciones}
 
 ### 1. Al crear las relaciones many to many entre dos tablas fuertes sin crear las one to many de la tabla intermedia a la fuerte.
 
@@ -176,20 +198,11 @@ Crear un endpoint que permita añadir mas productos de portfolio a un appointmen
    </div>   
 </p>
 
-
-## Desarrollo:
-
-``` js
- const developer = "Andrés Labat";
-
- console.log("Desarrollado por: " + developer);
-```  
-
-## 🚀 Deploy
+## 🚀 Deploy {#deploy}
 
 Por el momento su único uso es en local, en el futuro de realizará el deploy.
 
-## 🤝 Cómo Contribuir
+## 🤝 Cómo Contribuir {#cómo-contribuir}
 
 Si deseas contribuir a este proyecto, puedes realizar un fork del repositorio en GitHub, hacer tus cambios y enviar una solicitud de extracción (pull request). Tu contribución será revisada y, si es apropiada, se fusionará con la rama principal.
 
@@ -205,7 +218,13 @@ Si deseas contribuir a este proyecto, puedes realizar un fork del repositorio en
 
 Espero que disfrutes explorando y utilizando este backend del estudio de tatuajes. Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto conmigo a través de la información de contacto proporcionada.
 
-## 📝 Autor
+## 📝 Autor {#autor}
+
+``` js
+ const developer = "Andrés Labat Beltrán";
+
+ console.log("Desarrollado por: " + developer);
+```  
 
 - **Nombre**: Andrés Labat Beltrán
 - **Fecha de Comienzo del Proyecto**: 26/10/2023
@@ -214,11 +233,11 @@ Espero que disfrutes explorando y utilizando este backend del estudio de tatuaje
 - **Linkedin**: https://www.linkedin.com/in/andrés-labat-beltrán/.
 <a href="https://www.linkedin.com/in/andrés-labat-beltrán/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
 
-## ⚖️ Licencia
+## ⚖️ Licencia {#licencia}
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para obtener más información.
 
-## 👏 Agradecimientos
+## 👏 Agradecimientos {#agradecimientos}
 
 Agradecimentos a GeeksHubs Academy por los conocimientos que he podido adquirir estas cuatro semanas y que han hecho posible este proyecto, y a nuestros queridos profesores David Ochando y Dani Tarazona y su gran paciencia con nosotros.
 
