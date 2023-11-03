@@ -21,7 +21,7 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
 **Estudio de Tatuajes** es un proyecto que recrea el backend de un estudio de tatuajes utilizando node.js, typescript, express, mySQL, GIT y GitHub. Este proyecto incluye una base de datos relacional, así como diversos endpoints que te permiten registrarte, hacer login, acceder a la información almacenada en las tablas, e incluso actualizarla y borrarla.
 <p>
    <div align="center">
-      <img src="./img README/index img.jpeg" style="max-width: 100%">
+      <img src="./img README/index-img.jpeg" style="max-width: 100%">
    </div>    
 </p>
 
@@ -47,7 +47,14 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
 </details>
 
 ## 🎯 Objetivo {#objetivo}
-Este proyecto requería una API funcional conectada a una base de datos con al menos una relación de uno a muchos y una relación de muchos a muchos. 
+Este proyecto requería una API funcional conectada a una base de datos con al menos una relación de uno a muchos y una relación de muchos a muchos, por lo que el planteamiento inicial fue el siguiente.
+
+<p>
+   <div align="center">
+      <img src="./img README/planteamiento-inicial.jpeg" style="max-width: 100%">
+   </div>    
+</p>
+
 
 ## 🔧 Tecnologías Utilizadas {#tecnologías-utilizadas}
 
