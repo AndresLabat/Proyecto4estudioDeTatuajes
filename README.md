@@ -1,4 +1,4 @@
-<h1 align="center"># README - 🖌️Estudio de Tatuajes🖌️</h1>
+<h1 align="center"># README - ☠️Estudio de Tatuajes☠️</h1>
 
 __<p align="center">Proyecto 4 - Backend de un estudio de tatuajes - Semanas 7 y 8</p>__
 
@@ -14,7 +14,7 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
 </p>
 <p>
    <div align="center">
-      <em><b>Bienvenido a este backend</b></em>
+      <em><b>Bienvenido a este proyecto</b></em>
    </div>   
 <p align="center">_______________________________________________</p>
 
@@ -122,7 +122,7 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
 <details>
 <summary>Endpoints</summary>
 
-- USERS
+- 🏛️ USERS
     - 🛎️ REGISTER USER
 
             POST http://localhost:4000/user/register
@@ -147,11 +147,11 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
         }
         ```
 
-    - 🛎️ PROFILE USER (Auth: Introduce el token para acceder al perfil)
+    - 🛎️ PROFILE USER (Auth: Introduce el token para identificarte)
 
             GET http://localhost:4000/user/profile
 
-    - 🛎️ UPDATE USER (Auth: Introduce el token para acceder al perfil)
+    - 🛎️ UPDATE USER (Auth: Introduce el token para acceder identificarte)
 
             PUT http://localhost:4000/user/update
         body:
@@ -163,7 +163,7 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
         }
         ```    
 
-    - 🛎️ GET ALL USERS (Auth: Introduce el token para acceder al perfil, solo super_admin)
+    - 🛎️ GET ALL USERS (Auth: Introduce el token para identificarte, solo super_admin)
 
             GET http://localhost:4000/user/all?skip=3&page=1
         body:
@@ -175,7 +175,7 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
         }
         ``` 
 
-    - 🛎️ GET ALL WORKERS (Auth: Introduce el token para acceder al perfil)
+    - 🛎️ GET ALL WORKERS (Auth: Introduce el token para identificarte)
 
             GET http://localhost:4000/user/allWorkers?skip=3&page=1
 
@@ -193,7 +193,7 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
         }
         ``` 
 
-    - 🛎️ DELETE USERS BY SUPER ADMIN (Auth: Introduce el token para acceder al perfil, solo super_admin)
+    - 🛎️ DELETE USERS BY SUPER ADMIN (Auth: Introduce el token para identificarte, solo super_admin)
 
             DELETE http://localhost:4000/user/delete
         body:
@@ -203,7 +203,7 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
         }
         ``` 
 
-    - 🛎️ CHANGE ROLE BY SUPER ADMIN (Auth: Introduce el token para acceder al perfil, solo super_admin)
+    - 🛎️ CHANGE ROLE BY SUPER ADMIN (Auth: Introduce el token para identificarte, solo super_admin)
 
             PUT http://localhost:4000/user/changeRole
         body:
@@ -213,6 +213,79 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
             "role_id": 2 
         }
         ``` 
+
+- 🏛️ APPOINTMENTS
+
+    - 🛎️ GET APPOINTMENTS USER (Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/byUser?skip=2&page=1
+
+    - 🛎️ CREATE APPOINTMENT (Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/create
+        body:
+        ``` js
+        {
+            "date": "2024-06-12",
+            "shift": "morning",
+            "email": "worker@gmail.com",
+            "name": "tattoo2"
+        }
+        ```         
+
+    - 🛎️ UPDATE APPOINTMENT (Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/update
+        body:
+        ``` js
+        {
+            "id": 23,
+            "date": "2023-12-29",
+            "shift": "afternoon",
+            "email": "worker1@gmail.com",
+            "name": "tattoo2"
+        }
+        ```         
+
+    - 🛎️ DELETE APPOINTMENT (Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/delete
+        body:
+        ``` js
+        {
+            "id": 23,
+        }
+        ```  
+
+    - 🛎️ GET APPOINTMENTS BY WORKER (Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/byWorker?skip=2&page=1      
+
+    - 🛎️ GET APPOINTMENTS BY WORKER (Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/bySuperAdmin?skip=3&page=1  
+
+    - 🛎️ GET APPOINTMENT DETAIL BY USER (Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/detail
+        body:
+        ``` js
+        {
+            "id": 24,
+        }
+        ```      
+
+    - 🛎️ APPOINTMENTVALIDATION(Auth: Introduce el token para identificarte)
+
+            POST http://localhost:4000/appointment/validation
+        body:
+        ``` js
+        {
+            "email": "worker2@gmail.com",
+            "date": "2023-12-18",
+            "shift": "morning"
+        }    
+        ```  
 
 </details>
 
