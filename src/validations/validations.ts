@@ -160,7 +160,6 @@ const validateAvailableDate = async (date: string, emailWorker: string, shift: s
     return { isValid: true };
 };
 
-
 export {
     validateDate, validateString, validateShift, validateEmail,
     validateNumber, validatePassword, validateAvailableDate
