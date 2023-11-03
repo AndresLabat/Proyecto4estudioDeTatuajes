@@ -26,10 +26,10 @@ export const AppDataSource = new DataSource({
         CreateAppointmentPortfolioTable1698496659685
     ],
     entities: [
-        Role, 
-        User, 
-        Appointment, 
-        Portfolio, 
+        Role,
+        User,
+        Appointment,
+        Portfolio,
         Appointment_portfolio
     ],
     synchronize: false,

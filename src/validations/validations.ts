@@ -149,7 +149,7 @@ const validateAvailableDate = async (date: string, emailWorker: string, shift: s
             isValid = false;
         }
     });
-    
+
     if (!isValid) {
         return {
             isValid: false,

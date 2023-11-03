@@ -12,11 +12,11 @@ app.use("/user", routerUsers)
 app.use("/appointment", routerAppointments)
 
 AppDataSource.initialize()
-.then(() => {
-    console.log('Database connected');
-    app.listen(PORT, ()=>{
-        console.log("running server on " + PORT);
-    })
+    .then(() => {
+        console.log('Database connected');
+        app.listen(PORT, () => {
+            console.log("running server on " + PORT);
+        })
     })
     .catch(error => {
         console.log(error);

@@ -597,16 +597,16 @@ const appointmentValidation = async (req: Request, res: Response) => {
             relations: ["worker"],
         })
 
-        if(findAppointmentWorker.length == 0){
+        if (findAppointmentWorker.length == 0) {
             return res.json({
                 success: true,
                 message: "This appointment not exist"
             });
         }
 
-        const mapAppointmentWorker = findAppointmentWorker.map((obj)=>{
+        const mapAppointmentWorker = findAppointmentWorker.map((obj) => {
             const workerEmail = obj.worker.email
-            if(workerEmail == emailWorker){
+            if (workerEmail == emailWorker) {
                 return obj.client_id
             }
         })
