@@ -296,6 +296,21 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
 
 </details>
 
+## ✅ Validadores
+
+<details>
+  <summary>Tipos de validadores</summary>
+
+- **validateEmail**: comprueba que exista, que sea un string, que no tenga más de 100 caracteres y que tenga la estructura propia de un email.
+- **validateDate**: comprueba que exista, que sea un string y que tenga el formato fecha.
+- **validateShift**: comprueba que exista, que sea un string y que su valor sea valido para ese enum.
+- **validateString**: comprueba que exista, que sea un string que no sea un string vacío y que no tenga más caracteres que los introducidos como parámetro.
+- **validateNumber**: comprueba que exista, que sea un número y que no sea un número de más cifras que las introducidas como parámetro.
+- **validatePassword**: comprueba que exista, que sea un string, que no tenga más de 100 caracteres y que tenga al menos una letra en minúscula, al menos una en mayúscula, al menos un símbolo y al menos un número.
+- **validateAvailableDate**: comprueba que el trabajador en el día y el turno indicados esta libre para poder realizar una cita con el.
+
+</details>
+
 ## 🚄 Futuras Funcionalidades {#futuras-funcionalidades}
 
 Añadir el CRUD de portfolio:
