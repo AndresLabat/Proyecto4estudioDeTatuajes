@@ -104,7 +104,7 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
         DB_PASSWORD= ""
         DB_NAME=""
         DB_PORT=   
-        
+
         //  Aqui además almacenamos el secreto del token  
         JWT_SECRET= ""
     ```  
@@ -122,36 +122,98 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
 <details>
 <summary>Endpoints</summary>
 
-- AUTH
-    - REGISTER
+- USERS
+    - 🛎️ REGISTER USER
 
-            POST http://localhost:3000/api/register
+            POST http://localhost:4000/user/register
         body:
         ``` js
             {
-                "user": "David",
-                "email": "david@david.com",
-                "password": "princes"
+                "full_name": "NewUser",
+                "email": "NewUser@gmail.com",
+                "password": "Aa1234@",
+                "phone_number": 666555666
             }
         ```
 
-    - LOGIN
+    - 🛎️ LOGIN USER
 
-            POST http://localhost:3000/api/login  
+            POST http://localhost:4000/user/login
         body:
         ``` js
-            {
-                "user": "David",
-                "email": "david@david.com",
-                "password": "princes"
-            }
+        {
+            "email": "NewUser@gmail.com",
+            "password": "Aa1234@" 
+        }
         ```
-- RUTINAS
-    - RECUPERAR RUTINAS  
 
-            GET http://localhost:3000/api/rutina
+    - 🛎️ PROFILE USER (Auth: Introduce el token para acceder al perfil)
 
-    - ...
+            GET http://localhost:4000/user/profile
+
+    - 🛎️ UPDATE USER (Auth: Introduce el token para acceder al perfil)
+
+            PUT http://localhost:4000/user/update
+        body:
+        ``` js
+        {
+            "full_name": "NewUser", 
+            "password": "Aa1234@",
+            "phone_number": 666555444
+        }
+        ```    
+
+    - 🛎️ GET ALL USERS (Auth: Introduce el token para acceder al perfil, solo super_admin)
+
+            GET http://localhost:4000/user/all?skip=3&page=1
+        body:
+        ``` js
+        {
+            "user": "NewUser",
+            "email": "NewUser@gmail.com",
+            "password": "Aa1234@"
+        }
+        ``` 
+
+    - 🛎️ GET ALL WORKERS (Auth: Introduce el token para acceder al perfil)
+
+            GET http://localhost:4000/user/allWorkers?skip=3&page=1
+
+
+    - 🛎️ CREATE WORKER
+
+            POST http://localhost:4000/user/worker
+        body:
+        ``` js
+        {
+            "full_name": "worker",
+            "email": "worker@gmail.com",
+            "password": "Aa1234@",
+            "phone_number": 666555666 
+        }
+        ``` 
+
+    - 🛎️ DELETE USERS BY SUPER ADMIN (Auth: Introduce el token para acceder al perfil, solo super_admin)
+
+            DELETE http://localhost:4000/user/delete
+        body:
+        ``` js
+        {
+            "id": 15
+        }
+        ``` 
+
+    - 🛎️ CHANGE ROLE BY SUPER ADMIN (Auth: Introduce el token para acceder al perfil, solo super_admin)
+
+            PUT http://localhost:4000/user/changeRole
+        body:
+        ``` js
+        {
+            "id": 15, 
+            "role_id": 2 
+        }
+        ``` 
+
 </details>
 
 ## 🚄 Futuras Funcionalidades {#futuras-funcionalidades}
@@ -194,7 +256,7 @@ Crear un endpoint que permita añadir mas productos de portfolio a un appointmen
       <img src="img README/validations.jpeg" style="max-width: 100%;" width="500">
    </div>    
    <div align="center">
-      <em><b>cada validador contiene su lógica y es exportado para su uso en los controladores</b></em>
+      <em><b>Cada validador contiene su lógica y es exportado para su uso en los controladores</b></em>
    </div>   
 </p>
 
