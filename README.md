@@ -79,14 +79,20 @@ Tecnologías utilizadas:
 ## Diagrama BD
 !['imagen-db'](./images/sampleDb.png)
 
-## Instalación en local
-1. Clonar el repositorio
-2. ` $ npm install `
-3. Conectamos nuestro repositorio con la base de datos 
-4. ``` $ Ejecutamos las migraciones ``` 
-5. ``` $ Ejecutamos los seeders ``` 
-6. ``` $ npm run dev ``` 
-7. ...
+## 🍃Ramas del Repositorio
+
+Este proyecto se ha desarrollado en tres ramas. En la rama "dev" se han realizado las partes de maquetación y estilos en html y css, por otro lado en la rama "feature" se le han añadido las funcionalidades a los botones y se ha creado la lógica que permite jugar al MasterMind desde Javascript y, por último, todo este desarrollo en ambas ramas se ha unido a la rama principal "master", donde se ha creado este README.
+
+## ⚙️Instrucciones de Uso
+
+1. Clona este repositorio en tu máquina local usando el siguiente comando: `git clone [URL del repositorio]`.
+2. A continuación instala todas las dependencias con el comando ` $ npm install `
+3. Conectamos nuestro repositorio con la base de datos mediante las credenciales en el archivo db.ts
+4. Ejecutamos las migraciones mediante el comando `npx typeorm-ts-node-commonjs migration:run -d ./src/db.ts` 
+5. Si estamos en desarrollo, lo hacemos funcionar y actualizarse en tiempo real mediante el comando `npm run dev`
+6. Si queremos compilar usamos el comando `npm run build`
+7. Si estamos en producción, lo ponemos en marcha con el comando `npm run start`
+8. Usamos los endpoints almacenados en la carpeta http para usar las distintas funcionalidades que se han diseñado.
 
 ## Endpoints
 <details>
