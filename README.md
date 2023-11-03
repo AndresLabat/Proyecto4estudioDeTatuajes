@@ -28,6 +28,7 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
 ## 📋 Contenido del Readme
 
 <details>
+
   <summary>Apartados</summary>
 <ol>
     <li><a href="#objetivo">Objetivo</a></li>
@@ -36,6 +37,7 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
     <li><a href="#ramas-del-repositorio">Ramas del Repositorio</a></li>
     <li><a href="#instrucciones-de-uso">Instrucciones de Uso</a></li>
     <li><a href="#endpoints">Endpoints</a></li>
+    <li><a href="#validadores">Validadores</a></li>
     <li><a href="#futuras-funcionalidades">Futuras Funcionalidades</a></li>
     <li><a href="#problemas-y-soluciones">Problemas y Soluciones</a></li>
     <li><a href="#deploy">Deploy</a></li>
@@ -44,10 +46,12 @@ Desarrollado como parte del Bootcamp de Full Stack Developer de Geekshubs Academ
     <li><a href="#licencia">Licencia</a></li>
     <li><a href="#agradecimientos">Agradecimientos</a></li>
   </ol>
+
 </details>
 
-## 🎯 Objetivo {#objetivo}
-Este proyecto requería una API funcional conectada a una base de datos con al menos una relación de uno a muchos y una relación de muchos a muchos, por lo que el planteamiento inicial fue el siguiente.
+## Objetivo
+
+🎯 Este proyecto requería una API funcional conectada a una base de datos con al menos una relación de uno a muchos y una relación de muchos a muchos, por lo que el planteamiento inicial fue el siguiente.
 
 <p>
    <div align="center">
@@ -56,10 +60,10 @@ Este proyecto requería una API funcional conectada a una base de datos con al m
 </p>
 
 
-## 🔧 Tecnologías Utilizadas {#tecnologías-utilizadas}
+## Tecnologías Utilizadas
 
 <details>
-<summary>Tecnologías</summary>
+<summary>🔧 Tecnologías</summary>
 
 - **Typescript**: es el lenguaje de programación sobre el que se han montado el servidor y los distintos endpoints.
   <code><img width="5%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/512px-Typescript_logo_2020.svg.png"></code>
@@ -81,9 +85,9 @@ Este proyecto requería una API funcional conectada a una base de datos con al m
 
 </details>
 
-## 🏗️ Diagrama BD {#diagrama-bd}
+## Diagrama BD
 
-Se establece que solo hay un rol por usuario, y que este es el que le da los privilegios para poder usar algunos endpoints o no, por otro lado, la tabla "users" almacena tanto los clientes como los trabajadores, que se unen en la citas, siendo esta última una tabla intermedia.
+🏗️ Se establece que solo hay un rol por usuario, y que este es el que le da los privilegios para poder usar algunos endpoints o no, por otro lado, la tabla "users" almacena tanto los clientes como los trabajadores, que se unen en la citas, siendo esta última una tabla intermedia.
 Además en cada cita se pueden realizar varios tatuajes o piercings y el mismo piercing o tatuaje realizarse en varias citas diferentes.
 <p>
    <div align="center">
@@ -91,14 +95,14 @@ Además en cada cita se pueden realizar varios tatuajes o piercings y el mismo p
    </div>    
 </p>
 
-## 🍃 Ramas del Repositorio {#ramas-del-repositorio}
+## Ramas del Repositorio
 
-Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado toda la lógica y todo lo referente a node.js, express y typescript y, por otro lado, en la rama "master" fue donde de inició el proyecto y donde finalmente se ha creado este README.
+🍃 Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado toda la lógica y todo lo referente a node.js, express y typescript y, por otro lado, en la rama "master" fue donde de inició el proyecto y donde finalmente se ha creado este README.
 
-## ⚙️ Instrucciones de Uso {#instrucciones-de-uso}
+## Instrucciones de Uso
 
 <details>
-<summary>Instrucciones</summary>
+<summary>⚙️ Instrucciones</summary>
 
 1. Clona este repositorio en tu máquina local usando el siguiente comando: `git clone [URL del repositorio]`.
 2. A continuación instala todas las dependencias con el comando ` $ npm install `
@@ -124,10 +128,10 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
 
 </details>
 
-## 👀 Endpoints {#endpoints}
+## Endpoints
 
 <details>
-<summary>Endpoints</summary>
+<summary>👀 Endpoints</summary>
 
 - 🏛️ USERS
     - 🛎️ REGISTER USER
@@ -296,10 +300,10 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
 
 </details>
 
-## ✅ Validadores
+## Validadores
 
 <details>
-  <summary>Tipos de validadores</summary>
+  <summary>✅ Tipos de validadores</summary>
 
 - **validateEmail**: comprueba que exista, que sea un string, que no tenga más de 100 caracteres y que tenga la estructura propia de un email.
 - **validateDate**: comprueba que exista, que sea un string y que tenga el formato fecha.
@@ -311,19 +315,19 @@ Este proyecto se ha desarrollado en dos ramas. En la rama "dev" se ha realizado 
 
 </details>
 
-## 🚄 Futuras Funcionalidades {#futuras-funcionalidades}
+## Futuras Funcionalidades
 
-Añadir el CRUD de portfolio:
+🚄  Añadir el CRUD de portfolio:
 - Get portfolio
 - Create portfolio  
 - Update portfolio  
 - Delete portfolio
 
-Crear un endpoint que permita añadir mas productos de portfolio a un appointment.
+🚄 Crear un endpoint que permita añadir mas productos de portfolio a un appointment.
 - Add product to the appointment
 
 
-## ⚠️ Problemas y Soluciones {#problemas-y-soluciones}
+## Problemas y Soluciones
 
 ### 1. Al crear las relaciones many to many entre dos tablas fuertes sin crear las one to many de la tabla intermedia a la fuerte.
 
@@ -355,13 +359,13 @@ Crear un endpoint que permita añadir mas productos de portfolio a un appointmen
    </div>   
 </p>
 
-## 🚀 Deploy {#deploy}
+## Deploy
 
-Por el momento su único uso es en local, en el futuro de realizará el deploy.
+🚀 Por el momento su único uso es en local, en el futuro de realizará el deploy.
 
-## 🤝 Cómo Contribuir {#cómo-contribuir}
+## Cómo Contribuir
 
-Si deseas contribuir a este proyecto, puedes realizar un fork del repositorio en GitHub, hacer tus cambios y enviar una solicitud de extracción (pull request). Tu contribución será revisada y, si es apropiada, se fusionará con la rama principal.
+🤝 Si deseas contribuir a este proyecto, puedes realizar un fork del repositorio en GitHub, hacer tus cambios y enviar una solicitud de extracción (pull request). Tu contribución será revisada y, si es apropiada, se fusionará con la rama principal.
 
 1. Haz un fork de este repositorio.
 
@@ -375,7 +379,7 @@ Si deseas contribuir a este proyecto, puedes realizar un fork del repositorio en
 
 Espero que disfrutes explorando y utilizando este backend del estudio de tatuajes. Si tienes alguna pregunta o necesitas asistencia, no dudes en ponerte en contacto conmigo a través de la información de contacto proporcionada.
 
-## 📝 Autor {#autor}
+## Autor
 
 ``` js
  const developer = "Andrés Labat Beltrán";
@@ -390,13 +394,13 @@ Espero que disfrutes explorando y utilizando este backend del estudio de tatuaje
 - **Linkedin**: https://www.linkedin.com/in/andrés-labat-beltrán/.
 <a href="https://www.linkedin.com/in/andrés-labat-beltrán/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
 
-## ⚖️ Licencia {#licencia}
+## Licencia
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para obtener más información.
+⚖️ Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para obtener más información.
 
-## 👏 Agradecimientos {#agradecimientos}
+## Agradecimientos
 
-Agradecimentos a GeeksHubs Academy por los conocimientos que he podido adquirir estas cuatro semanas y que han hecho posible este proyecto, y a nuestros queridos profesores David Ochando y Dani Tarazona y su gran paciencia con nosotros.
+👏 Agradecimentos a GeeksHubs Academy por los conocimientos que he podido adquirir estas cuatro semanas y que han hecho posible este proyecto, y a nuestros queridos profesores David Ochando y Dani Tarazona y su gran paciencia con nosotros.
 
 <p>
    <div align="center">
