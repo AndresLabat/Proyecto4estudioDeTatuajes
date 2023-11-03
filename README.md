@@ -54,26 +54,32 @@ Este proyecto requería una API funcional conectada a una base de datos con al m
 Decidí crear una aplicación web para ayudar a los amantes del gimnasio, que les permitiría crear y realizar un seguimiento de nuevas rutinas para sus ejercicios diarios. He visto muchas apps de este estilo pero ninguna que nos permita cambiar tan libremente las rutinas adaptandolas a nuestras necesidades.    
 
 ## Deploy 🚀
+
+Por el momento su unico uso es en local, en el futuro de realizará el deploy en la siguiente URL:
 <div align="center">
     <a href="https://www.google.com"><strong>Url a producción </strong></a>🚀🚀🚀
 </div>
 
-## Stack
-Tecnologías utilizadas:
-<div align="center">
-<a href="https://www.mongodb.com/">
-    <img src= "https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white"/>
-</a>
-<a href="https://www.expressjs.com/">
-    <img src= "https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB"/>
-</a>
-<a href="https://nodejs.org/es/">
-    <img src= "https://img.shields.io/badge/node.js-026E00?style=for-the-badge&logo=node.js&logoColor=white"/>
-</a>
-<a href="https://developer.mozilla.org/es/docs/Web/JavaScript">
-    <img src= "https://img.shields.io/badge/javascipt-EFD81D?style=for-the-badge&logo=javascript&logoColor=black"/>
-</a>
- </div>
+
+## 🔧 Tecnologías Utilizadas
+
+- **Typescript**: es el lenguaje de programación sobre el que se han montado el servidor y los distintos endpoints.
+  <code><img width="5%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/512px-Typescript_logo_2020.svg.png"></code>
+
+- **MySQL**: Es el sistema de gestión de bases de datos sobre el que se han construido las tablas en SQL.
+ <code><img width="10%" src="https://www.vectorlogo.zone/logos/mysql/mysql-ar21.svg"></code>
+
+- **Node**: Es una plataforma de tiempo de ejecución de JavaScript en el lado del servidor, se usa en combinación con typescript para crear servidores con un código más robusto y mantenible.
+<code><img width="13%" src="https://upload.wikimedia.org/wikipedia/vi/a/a7/Nodejs_logo_light.png"></code>
+
+- **Express**: Express proporciona una serie de características y herramientas que facilitan la creación de rutas, el manejo de solicitudes y respuestas, y la implementación de middleware para aplicaciones web.
+    <code><img width="15%" src="https://cdn.buttercms.com/2q5r816LTo2uE9j7Ntic"></code>
+
+- **Git**: Sistema de control de versiones para el seguimiento de cambios en el proyecto.
+  <code><img width="10%" src="https://www.vectorlogo.zone/logos/git-scm/git-scm-ar21.svg"></code>
+
+- **GitHub**: Plataforma para alojar el repositorio en línea y colaborar en el desarrollo del proyecto.
+    <code><img width="6%" src="https://www.svgrepo.com/show/35001/github.svg"></code>
 
 
 ## Diagrama BD
