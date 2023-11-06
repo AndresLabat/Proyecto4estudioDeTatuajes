@@ -361,7 +361,7 @@ Además en cada cita se pueden realizar varios tatuajes o piercings y el mismo p
 
 ## Deploy
 
-🚀 Por el momento su único uso es en local, en el futuro de realizará el deploy.
+🚀 Por el momento su único uso es en local, en el futuro se realizará el deploy.
 
 ## Cómo Contribuir
 
@@ -390,9 +390,8 @@ Espero que disfrutes explorando y utilizando este backend del estudio de tatuaje
 - **Nombre**: Andrés Labat Beltrán
 - **Fecha de Comienzo del Proyecto**: 26/10/2023
 - **Email**: andreslabat89@gmail.com.
-<a href = "mailto:micorreoelectronico@gmail.com"><img src="https://img.shields.io/badge/Gmail-C6362C?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>
 - **Linkedin**: https://www.linkedin.com/in/andrés-labat-beltrán/.
-<a href="https://www.linkedin.com/in/andrés-labat-beltrán/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
+
 
 ## Licencia
 
