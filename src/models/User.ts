@@ -20,6 +20,9 @@ export class User extends BaseEntity {
     phone_number!: number
 
     @Column()
+    photo!: string
+
+    @Column()
     is_active!: boolean
     
     @Column()
