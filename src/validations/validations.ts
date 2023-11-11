@@ -67,6 +67,27 @@ const validateString = (string: string, lenght: number) => {
     }
 };
 
+const validatePhoto = (string: string, length: number) => {
+    if (string != undefined) {
+
+        if (!string) {
+            return "you must insert an name " + string
+        }
+
+        if (typeof (string) !== "string") {
+            return `you must insert a strings`
+        };
+
+        if (string.length == 0) {
+            return `${string} too short, try to insert a larger one, max  ${length} characters`
+        };
+
+        if (string.length > length) {
+            return `${string} too long, try to insert a shorter one, max ${length} characters`
+        }
+    }
+};
+
 const validateNumber = (number: number, lenght: number) => {
 
     if (!number) {
@@ -162,5 +183,5 @@ const validateAvailableDate = async (date: string, emailWorker: string, shift: s
 
 export {
     validateDate, validateString, validateShift, validateEmail,
-    validateNumber, validatePassword, validateAvailableDate
+    validateNumber, validatePassword, validateAvailableDate, validatePhoto
 }

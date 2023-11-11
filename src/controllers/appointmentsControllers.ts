@@ -41,6 +41,7 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
             const { status, worker_id, client_id, appointmentPortfolios, worker, ...rest } = obj;
             const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
             const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
+            const imageProduct = obj.appointmentPortfolios.map((obj) => obj.image)
             const infoWorker = obj.worker
 
             if (infoWorker && (nameProduct.length !== 0) && (categoryProduct.length !== 0)) {
@@ -48,8 +49,9 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
                 const email = infoWorker.email;
                 const is_active = infoWorker.is_active;
                 const name = nameProduct[0];
+                const image = imageProduct[0]
                 const category = categoryProduct[0];
-                return { name, category, email, full_name, is_active, ...rest };
+                return { name, image, category, email, full_name, is_active, ...rest };
             }
             else {
                 return null
@@ -378,15 +380,17 @@ const getAppointmentsByWorker = async (req: Request, res: Response) => {
                 const { worker_id, client_id, appointmentPortfolios, client, ...rest } = obj;
                 const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
                 const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
+                const imageProduct = obj.appointmentPortfolios.map((obj) => obj.image)
                 const clientInfo = obj.client
 
                 if (clientInfo) {
                     const name = nameProduct[0]
                     const category = categoryProduct[0]
+                    const image = imageProduct[0]
                     const client_name = clientInfo.full_name
                     const client_email = clientInfo.email;
                     const is_active = clientInfo.is_active;
-                    return { name, category, client_name, client_email, is_active, ...rest };
+                    return { name, image, category, client_name, client_email, is_active, ...rest };
                 }
                 else {
                     return null
@@ -447,6 +451,7 @@ const getallAppointments = async (req: Request, res: Response) => {
             const { worker_id, client_id, appointmentPortfolios, client, worker, ...rest } = obj;
             const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
             const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
+            const imageProduct = obj.appointmentPortfolios.map((obj) => obj.image)
             const clientInfo = obj.client
             const workerInfo = obj.worker
 
@@ -459,9 +464,10 @@ const getallAppointments = async (req: Request, res: Response) => {
                 const worker_is_active = workerInfo.is_active;
                 const name = nameProduct[0]
                 const category = categoryProduct[0]
+                const image = imageProduct[0]
 
                 return {
-                    ...rest, name, category, client_is_active, client_name, client_email,
+                    ...rest, image, name, category, client_is_active, client_name, client_email,
                     worker_name, worker_email, worker_is_active
                 };
             }
@@ -512,6 +518,7 @@ const getAppointmentDetail = async (req: Request, res: Response) => {
         const appointmentsUserForShow = await Promise.all(appointmentsUser.map(async (obj) => {
             const { status, worker_id, client_id, appointmentPortfolios, worker, ...rest } = obj;
             const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
+            const imageProduct = obj.appointmentPortfolios.map((obj) => obj.image)
             const infoWorker = obj.worker
 
             if (infoWorker) {
@@ -519,7 +526,8 @@ const getAppointmentDetail = async (req: Request, res: Response) => {
                 const email = infoWorker.email;
                 const is_active = infoWorker.is_active;
                 const name = nameProduct[0]
-                return { full_name, email, name, is_active, ...rest };
+                const image = imageProduct[0]
+                return { full_name, image, email, name, is_active, ...rest };
             }
             else {
                 return null

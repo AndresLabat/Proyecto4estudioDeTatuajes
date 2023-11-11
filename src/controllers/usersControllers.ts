@@ -2,15 +2,19 @@ import { Request, Response } from "express-serve-static-core"
 import { User } from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { validateEmail, validateNumber, validatePassword, validateString } from "../validations/validations";
+import { validateEmail, validateNumber, validatePassword, validatePhoto, validateString,  } from "../validations/validations";
 
 const register = async (req: Request, res: Response) => {
 
     try {
-        const { full_name, email, password, phone_number } = req.body
+        const { full_name, email, password, phone_number, photo } = req.body
 
         if (validateString(full_name, 50)) {
             return res.json({ success: true, message: validateString(full_name, 50) });
+        }
+
+        if (validatePhoto(photo, 200)) {
+            return res.json({ success: true, message: validatePhoto(photo, 200) });
         }
 
         if (validateEmail(email)) {
@@ -31,7 +35,8 @@ const register = async (req: Request, res: Response) => {
             full_name,
             email,
             password: encrytedPassword,
-            phone_number
+            phone_number,
+            photo
         }).save()
 
         return res.json({
@@ -40,7 +45,7 @@ const register = async (req: Request, res: Response) => {
             data: {
                 full_name,
                 email: newUser.email,
-                phone_number: newUser.phone_number
+                phone_number: newUser.phone_number,
             }
         })
 
@@ -113,7 +118,7 @@ const login = async (req: Request, res: Response) => {
 const profile = async (req: Request, res: Response) => {
 
     try {
-        const { email } = req.body
+        const { email } = req.token
 
         const profileUser = await User.findOneBy({
             email
@@ -125,7 +130,8 @@ const profile = async (req: Request, res: Response) => {
             data: {
                 full_name: profileUser?.full_name,
                 email: profileUser?.email,
-                phone_number: profileUser?.phone_number
+                phone_number: profileUser?.phone_number,
+                photo: profileUser?.photo
             }
         })
 
@@ -141,11 +147,15 @@ const profile = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
 
     try {
-        const { full_name, password, phone_number } = req.body
+        const { full_name, password, phone_number, photo } = req.body
         const { id } = req.token
 
         if (validateString(full_name, 50)) {
             return res.json({ success: true, message: validateString(full_name, 50) });
+        }
+
+        if (validatePhoto(photo, 200)) {
+            return res.json({ success: true, message: validatePhoto(photo, 200) });
         }
 
         if (validatePassword(password)) {
@@ -163,7 +173,8 @@ const updateUser = async (req: Request, res: Response) => {
         }, {
             full_name,
             password: encrytedPassword,
-            phone_number
+            phone_number,
+            photo
         })
 
         return res.json({
@@ -279,6 +290,7 @@ const getAllWorkers = async (req: Request, res: Response) => {
                     name: users.full_name,
                     email: users.email,
                     phone_number: users.phone_number,
+                    photo: users.photo
                 };
             }
         });
@@ -301,10 +313,14 @@ const getAllWorkers = async (req: Request, res: Response) => {
 const createWorker = async (req: Request, res: Response) => {
 
     try {
-        const { full_name, email, password, phone_number } = req.body;
+        const { full_name, email, password, phone_number, photo } = req.body;
 
         if (validateString(full_name, 50)) {
             return res.json({ success: true, message: validateString(full_name, 50) });
+        }
+
+        if (validatePhoto(full_name, 200)) {
+            return res.json({ success: true, message: validatePhoto(photo, 200) });
         }
 
         if (validateEmail(email)) {
@@ -326,6 +342,7 @@ const createWorker = async (req: Request, res: Response) => {
             email,
             password: encrytedPassword,
             phone_number,
+            photo,
             role_id: 2
         }).save()
 
