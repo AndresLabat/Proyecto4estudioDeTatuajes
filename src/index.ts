@@ -1,6 +1,7 @@
 import express from "express";
 import { router as routerUsers } from "./routes/usersRoutes";
 import { router as routerAppointments } from "./routes/appointmentsRoutes";
+import { router as portfolioAppointments } from "./routes/portfolioRoutes";
 import 'dotenv/config';
 import { AppDataSource } from "./db";
 import cors from "cors"
@@ -13,6 +14,7 @@ app.use(express.json())
 app.use(cors())
 app.use("/user", routerUsers)
 app.use("/appointment", routerAppointments)
+app.use("/portfolio", portfolioAppointments)
 
 AppDataSource.initialize()
     .then(() => {

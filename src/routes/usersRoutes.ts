@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { register, login, profile, updateUser, getAllUsers, getAllWorkers, createWorker, deleteUserBySuperAdmin, changeRole } from "../controllers/usersControllers";
+import { register, login, profile, updateUser, getAllUsers, getAllWorkers, createWorker, 
+    deleteUserBySuperAdmin, changeRole } from "../controllers/usersControllers";
 import { auth } from "../middleware/auth";
 import { isSuperAdmin } from "../middleware/isSuperAdmin";
 

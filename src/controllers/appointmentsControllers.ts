@@ -3,7 +3,7 @@ import { Appointment } from "../models/Appointment"
 import { User } from "../models/User"
 import { Portfolio } from "../models/Portfolio"
 import { Appointment_portfolio } from "../models/Appointment_portfolio"
-import { validateAvailableDate, validateDate, validateEmail, validateNumber, validateShift, validateString } from "../validations/validations"
+import { validateAvailableDate, validateDate, validateEmail, validateNumber, validateShift } from "../validations/validations"
 
 const getAppointmentsUser = async (req: Request, res: Response) => {
 
@@ -64,6 +64,7 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
             return res.json({
                 success: true,
                 message: "This user has not appointments",
+                data:appointmentsUserForShows
             });
         }
 
@@ -452,9 +453,10 @@ const getallAppointments = async (req: Request, res: Response) => {
 
         const appointmentsUserForShows = await Promise.all(appointmentsUser.map(async (obj) => {
             const { worker_id, client_id, appointmentPortfolios, client, worker, ...rest } = obj;
-            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name,)
+            const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
             const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
             const imageProduct = obj.appointmentPortfolios.map((obj) => obj.image)
+            const priceProduct = obj.appointmentPortfolios.map((obj) => obj.price)
             const clientInfo = obj.client
             const workerInfo = obj.worker
 
@@ -468,9 +470,10 @@ const getallAppointments = async (req: Request, res: Response) => {
                 const name = nameProduct[0]
                 const category = categoryProduct[0]
                 const image = imageProduct[0]
+                const price = priceProduct[0]
 
                 return {
-                    ...rest, image, name, category, client_is_active, client_name, client_email,
+                    ...rest, image, price, name, category, client_is_active, client_name, client_email,
                     worker_name, worker_email, worker_is_active
                 };
             }
