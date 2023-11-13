@@ -2,7 +2,7 @@ import { Request, Response } from "express-serve-static-core"
 import { User } from "../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { validateEmail, validateNumber, validatePassword, validatePhoto, validateString,  } from "../validations/validations";
+import { validateEmail, validateNumber, validatePassword, validatePhoto, validateString } from "../validations/validations";
 
 const register = async (req: Request, res: Response) => {
 
@@ -287,10 +287,11 @@ const getAllWorkers = async (req: Request, res: Response) => {
         const mappingUsers = profileUser.map(users => {
             if (users.is_active == true) {
                 return {
-                    name: users.full_name,
+                    full_name: users.full_name,
                     email: users.email,
                     phone_number: users.phone_number,
-                    photo: users.photo
+                    photo: users.photo,
+                    id: users.id
                 };
             }
         });

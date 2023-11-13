@@ -42,6 +42,7 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
             const nameProduct = obj.appointmentPortfolios.map((obj) => obj.name)
             const categoryProduct = obj.appointmentPortfolios.map((obj) => obj.category)
             const imageProduct = obj.appointmentPortfolios.map((obj) => obj.image)
+            const priceProduct = obj.appointmentPortfolios.map((obj) => obj.price)
             const infoWorker = obj.worker
 
             if (infoWorker && (nameProduct.length !== 0) && (categoryProduct.length !== 0)) {
@@ -51,7 +52,8 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
                 const name = nameProduct[0];
                 const image = imageProduct[0]
                 const category = categoryProduct[0];
-                return { name, image, category, email, full_name, is_active, ...rest };
+                const price = priceProduct[0];
+                return { name, price, image, category, email, full_name, is_active, ...rest };
             }
             else {
                 return null
@@ -83,7 +85,7 @@ const getAppointmentsUser = async (req: Request, res: Response) => {
 const createAppointment = async (req: Request, res: Response) => {
 
     try {
-        const { date, shift, email, id:portfolio_id } = req.body;
+        const { date, shift, email, portfolio_id } = req.body;
         const { id } = req.token;
 
         if (validateDate(date)) {
@@ -188,11 +190,15 @@ const createAppointment = async (req: Request, res: Response) => {
 const updateAppointment = async (req: Request, res: Response) => {
 
     try {
-        const { id, date, shift, email, name } = req.body
+        const { id, date, shift, email, portfolioId } = req.body
         const { id: client_id } = req.token
 
         if (validateNumber(id, 7)) {
             return res.json({ success: true, message: validateNumber(id, 7) });
+        }
+
+        if (validateNumber(portfolioId, 7)) {
+            return res.json({ success: true, message: validateNumber(portfolioId, 7) });
         }
 
         if (validateDate(date)) {
@@ -203,9 +209,6 @@ const updateAppointment = async (req: Request, res: Response) => {
             return res.json({ success: true, message: validateShift(shift) });
         }
 
-        if (validateString(name, 50)) {
-            return res.json({ success: true, message: validateString(name, 50) });
-        }
 
         if (validateEmail(email)) {
             return res.json({ success: true, message: validateEmail(email) });
@@ -247,14 +250,14 @@ const updateAppointment = async (req: Request, res: Response) => {
             })
         }
 
-        const nameProduct = await Portfolio.findOneBy({
-            name
+        const product = await Portfolio.findOneBy({
+            id:portfolioId
         })
 
-        if (!nameProduct) {
+        if (!product) {
             return res.json({
                 success: true,
-                message: "the name of the item purchase doesn't exist",
+                message: "this tattoo or piercing doesn't exist",
             })
         }
 
@@ -269,7 +272,7 @@ const updateAppointment = async (req: Request, res: Response) => {
         await Appointment_portfolio.update({
             appointment_id: id
         }, {
-            portfolio_id: nameProduct?.id
+            portfolio_id: product?.id
         })
 
         const dataAppointmentUpdated = await Appointment.findOneBy({
@@ -278,15 +281,15 @@ const updateAppointment = async (req: Request, res: Response) => {
 
         return res.json({
             success: true,
-            message: "appointment created succesfully",
+            message: "appointment updated succesfully",
             data: {
                 date,
                 shift,
                 workerName: findWorker_id?.full_name,
                 email,
                 id,
-                purchaseName: name,
-                category: nameProduct?.category,
+                portfolioId: product?.id,
+                category: product?.category,
                 created_at: dataAppointmentUpdated?.created_at,
                 updated_at: dataAppointmentUpdated?.updated_at
             }
