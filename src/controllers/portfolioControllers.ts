@@ -23,7 +23,10 @@ const getPortfolio = async (req: Request, res: Response) => {
         const page: any = parseInt(req.query.page as string) || 1
         const skip = (page - 1) * pageSize
 
-        const portfolio = await Portfolio.find()
+        const portfolio = await Portfolio.find({
+            skip: skip,
+            take: pageSize
+        })
 
         if (portfolio.length == 0) {
             return res.json({
